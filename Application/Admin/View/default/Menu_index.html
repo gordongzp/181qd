@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<css href="__COMMON__/jquery-ui/jquery-ui.min.css" />
+<css href="__THEME__/css/index.css" />
+<css href="__THEME__/font/font-awesome.min.css" />
+<css href="__COMMON__/css/perfect-scrollbar.min.css" />
+<style>html, body { overflow: visible;}</style>
+<script>
+
+var ADMIN_TEMPLATES_URL = '__THEME__';
+var LOADING_IMAGE = "__THEME__/images/loading.gif";
+var ADMIN_RESOURCE_URL = '__THEME__';
+</script>
+<js href="__COMMON__/js/jquery/jquery.js" />
+<js href="__COMMON__/jquery-ui/jquery-ui.min.js" />
+<js href="__COMMON__/jquery-ui/zh-CN.js" />
+<js href="__THEME__/js/admin.js" />
+<script src="__THEME__/dialog/dialog.js" id="dialog_js"></script>
+<js href="__THEME__/js/flexigrid.js" />
+<js href="__COMMON__/js/jquery/jquery.validation.min.js" />
+<js href="__THEME__/js/common.js" />
+<js href="__COMMON__/js/perfect-scrollbar.min.js" />
+<js href="__COMMON__/js/jquery/jquery.mousewheel.js" />
+<js href="__COMMON__/js/jquery/jquery.edit.js" />
+</head>
+<body style="background-color: #FFF; overflow: auto;">
+	<js href="__COMMON__/js/jquery/jquery.picTip.js" />
+	<div id="append_parent"></div>
+	<div id="ajaxwaitid"></div>
+	<div class="page">
+		<div class="fixed-bar">
+			<div class="item-title">
+				<neq name="back" value="0">
+				<a class="back" href="{:U('menu/index')}" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+				</neq>
+				<div class="subject">
+					<h3>{$subject}</h3>
+					<h5>后台菜单的添加、修改和删除</h5>
+				</div>
+			</div>
+		</div>
+		<table class="flex-table">
+			<thead>
+				<tr>
+					<th width="24" align="center" class="sign"><i class="ico-check"></i></th>
+					<th width="150" class="handle" align="center">操作</th>
+					<th width="60" align="center">排序</th>
+					<th width="300" align="left">菜单名称</th>
+					<th width="80" align="center">类型</th>
+					<th width="80" align="center">状态</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="r">
+				<tr data-id="{$r.menu_id}">
+					<td class="sign"><i class="ico-check"></i></td>
+					<td class="handle">
+					<a class="btn red" href="javascript:void(0);" onclick="fg_del({$r.menu_id});"><i class="fa fa-trash-o"></i>删除</a>
+						<span class="btn"><em><i class="fa fa-cog"></i>设置<i class="arrow"></i></em>
+						<ul>
+							<li><a href="{:U('menu/edit',array('menu_id'=>$r['menu_id']))}">编辑此菜单</a></li>
+							<li><a href="{:U('menu/add',array('pid'=>$r['menu_id']))}">新增子菜单</a></li>
+							<li><a href="{:U('menu/index',array('pid'=>$r['menu_id'],'pname'=>$r['menu_name']))}">查看子菜单</a></li>
+						</ul>
+						</span>
+					</td>
+					<td class="sort"><span title="可编辑" column_id="{$r.menu_id}" fieldname="sort" nc_type="inline_edit" class="editable ">{$r.sort}</span></td>
+					<td class="name"><span title="可编辑" column_id="{$r.menu_id}" fieldname="menu_name" nc_type="inline_edit" class="editable ">{$r.menu_name}</span></td>
+					<td><eq name="r.type" value="1">菜单<else/>节点</eq></td>
+					<td>
+						<eq name="r.status" value="0">
+						<span class="no"><i class="fa fa-ban"></i>禁用</span>
+						<else/>
+						<span class="yes"><i class="fa fa-check-circle"></i>启用</span>
+						</eq>
+					</td>
+					<td></td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	<script>
+		$(function(){
+			$('.flex-table').flexigrid({
+				height:'auto',// 高度自动
+				usepager: false,// 不翻页
+				striped:false,// 不使用斑马线
+				resizable: false,// 不调节大小
+				title: '{$ftitle}',// 表格标题
+				reload: false,// 不使用刷新
+				columnControl: false,// 不使用列控制
+				buttons : [
+					{display: '<i class="fa fa-plus"></i>新增数据', name : 'add', bclass : 'add', onpress : fg_operation },
+					{display: '<i class="fa fa-trash"></i>批量删除', name : 'del', bclass : 'del', title : '将选定行数据批量删除', onpress : fg_operation },
+				]
+			});
+
+			$('span[nc_type="inline_edit"]').inline_edit({c:'menu',a:'ajax_save_menu'});
+		});
+		
+		function fg_operation(name, bDiv) {
+			if (name == 'add') {
+				window.location.href = '{:U("menu/add")}';
+			}else if (name == 'del') {
+				if ($('.trSelected', bDiv).length == 0) {
+					showError('请选择要操作的数据项！');
+				}
+				var itemids = new Array();
+				$('.trSelected', bDiv).each(function(i){
+					itemids[i] = $(this).attr('data-id');
+				});
+				fg_del(itemids);
+			}
+		}
+		
+		function fg_del(ids){
+			if (typeof ids == 'number') {
+				var ids = new Array(ids.toString());
+			};
+			id = ids.join(',');
+			if(confirm('确认删除此菜单及其所有子菜单吗？')){
+				$.getJSON('{:U("menu/del")}', {id:id}, function(data){
+					if (data.status) {
+						location.reload();
+					} else {
+						showError(data.info)
+					}
+				});
+			}
+		}
+	</script>
+	<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+</html>

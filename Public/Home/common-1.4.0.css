@@ -1,0 +1,108 @@
+@charset "utf-8";
+/**
+ * 公用的css
+ */
+.f12 { font-size:12px; }
+.f14 { font-size:14px; }
+.mr5 { margin-right:5px; }
+.mr10 { margin-right:10px; }
+.mb5 { margin-bottom:5px; }
+.mtb1em { margin-top:1em; margin-bottom:1em; }
+.mlr1em { margin-left:-1em; margin-right:-1em; }
+.tac { text-align:center; }
+.wp100 { width:100%; }
+.fl { float:left; }
+.fr { float:right; }
+.nolist { list-style:none; padding-left:0; }
+.s1 { color:#F63; }
+.s2 { color:#090; }
+
+
+/* 更改theme-a链接点击时激活颜色 */
+.ui-page-theme-a .ui-btn.ui-btn-active, html .ui-bar-a .ui-btn.ui-btn-active, html .ui-body-a .ui-btn.ui-btn-active, html body .ui-group-theme-a .ui-btn.ui-btn-active, html head+body .ui-btn.ui-btn-a.ui-btn-active, .ui-page-theme-a .ui-checkbox-on:after, html .ui-bar-a .ui-checkbox-on:after, html .ui-body-a .ui-checkbox-on:after, html body .ui-group-theme-a .ui-checkbox-on:after, .ui-btn.ui-checkbox-on.ui-btn-a:after, .ui-page-theme-a .ui-flipswitch-active, html .ui-bar-a .ui-flipswitch-active, html .ui-body-a .ui-flipswitch-active, html body .ui-group-theme-a .ui-flipswitch-active, html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active, .ui-page-theme-a .ui-slider-track .ui-btn-active, html .ui-bar-a .ui-slider-track .ui-btn-active, html .ui-body-a .ui-slider-track .ui-btn-active, html body .ui-group-theme-a .ui-slider-track .ui-btn-active, html body div.ui-slider-track.ui-body-a .ui-btn-active { background-color:#60A725; border-color:#60A725; color:#fff; text-shadow:0 1px 0 #60A725; }
+/* 更改theme-a链接获取焦点颜色 */
+.ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, html body .ui-group-theme-a .ui-btn:focus, html head+body .ui-btn.ui-btn-a:focus, .ui-page-theme-a .ui-focus, html .ui-bar-a .ui-focus, html .ui-body-a .ui-focus, html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html head+body .ui-body-a.ui-focus { -webkit-box-shadow:0 0 12px #096; -moz-box-shadow:0 0 12px #096; box-shadow:0 0 12px #096 }
+/* icon图标背景 */
+.ui-btn-icon-left:after, .ui-btn-icon-right:after, .ui-btn-icon-top:after, .ui-btn-icon-bottom:after, .ui-btn-icon-notext:after { background-color:#74C650; }
+/**
+ * 自定义icon 首页图标
+ */
+.ui-icon-sheji, .ui-icon-baojia, .ui-icon-gs, .ui-icon-anli, .ui-icon-baozhang, .ui-icon-xuetang { padding:3.0em 0.5em 1em; font-weight:normal; }
+/*
+ * icon 背景颜色
+.ui-page-theme-a .ui-icon-sheji { background-color:#FFBA00; }
+.ui-page-theme-a .ui-icon-gs { background-color:#1AC269; }
+.ui-page-theme-a .ui-icon-anli { background-color:#FF784F; }
+.ui-page-theme-a .ui-icon-baozhang { background-color:#60AFE7; }
+.ui-page-theme-a .ui-icon-xuetang { background-color:#2BBDC4; }
+*/
+.ui-icon-sheji:after, .ui-icon-baojia:after, .ui-icon-gs:after, .ui-icon-anli:after, .ui-icon-baozhang:after, .ui-icon-xuetang:after { background-color:inherit; background-image:url(../../../img/icon/home_32x32.png); border-radius:0; width:32px; height:32px; margin-left:-16px; }
+.home-btn a { font-weight:normal; }
+.home-btn .ui-btn.ui-btn-active { background-color:#F6F6F6; color:inherit; text-shadow:none; } /*首页按钮点击时*/
+.ui-icon-sheji:after { background-position:0 -32px; }
+.ui-icon-baojia:after { background-position:0 -224px; }
+.ui-icon-gs:after { background-position:0 -96px; }
+.ui-icon-anli:after { background-position:0 -288px; }
+.ui-icon-baozhang:after { background-position:0 -256px; }
+.ui-icon-xuetang:after { background-position:0 -320px; }
+
+/* 修复 footer 部分 左右加按钮时显示位置不正确的问题 */
+.ui-footer .ui-btn-left, .ui-footer .ui-btn-right, .ui-btn-left > [class*="ui-"], .ui-btn-right > [class*="ui-"] {
+ margin: 0;
+}
+/*textinput 分组*/
+.controlgroup-textinput { padding-top:.22em; padding-bottom:.22em; }
+/* header */
+/* top-banner */
+.top-banner { background-color:#F0F0F0; padding:0.5em 0 0.5em 0.5em; }
+.top-banner p { font-size:0.75em; margin:0.2em 0; }
+.top-banner p span { color:#F00; }
+/* 首页 */
+#home-index .ui-header .ui-title { color:#777; text-align:left; margin:0 0 0 1em; }
+#home-index .logo { color:#090; }
+/* 分页 */
+.pagination { position: relative; overflow: auto; min-height: 50px; text-align:center; }
+.pagination .ui-btn { padding:0.6em 1em; }
+/*分类*/
+.menu { display:none; }
+/* 公司列表 案例列表 */
+#gs-index .searcher { margin:-1em 0 0; padding-bottom:0.5em; }
+
+.gs-menu { margin-bottom:1.5em; }
+.gs-menu h4 { margin-top:0.5em; margin-bottom:0.5em; }
+.gs-menu .menu-area h4 { margin-top:0; }
+.gs-list .list-img, .gs-list .list-img > img { width:150px; height:80px; }
+.gs-list .list-img, .case-list .list-img { float:left; margin-right:10px; margin-left:-10px; }
+/* 公司详情页 */
+.ui-listview > li.gs-about .ui-collapsible { margin:0; }
+.ui-listview > li.gs-about h4 { margin:0; }
+.ui-listview > li.gs-about h4 a { background:none; border:none; font-weight:normal; font-size:0.875em; padding-left:0; }
+.ui-listview > li.gs-about h4 a:hover { background:none; }
+.ui-listview > li.gs-about .ui-collapsible-content { padding:0; margin:0; }
+.ui-listview > li.gs-about p { white-space:normal; font-size:inherit; margin:0; font-size:0.875em; }
+.gs-detail-dianping .ui-listview > li h6 { white-space:normal; font-weight:normal; }
+.gs-detail-dianping .ui-listview > li p { color:#999; }
+/* 案例列表 */
+.case-list .list-img, .case-list .list-img > img { width:80px; height:58px; }
+/* 新闻列表 */
+.article-list .list-img, .article-list .list-img > img { width:80px; height:58px; }
+.article-list .list-img { float:left; margin-right:10px; }
+/* 内容页 */
+.text-title { font-size:16pt; margin-top:0; } /*标题*/
+.text-info { border-bottom:1px solid #DDD; font-size:smaller; padding-bottom:5px; } /*相关信息*/
+.text-content { overflow:hidden; padding:15px 0; } /*内容*/
+.text-content img { width:100%; height:auto; }
+/*案例详情页*/
+.swipe-navigate { background-size: cover; background-position: center center; background-repeat: no-repeat; }
+.swipe-navigate .ui-footer { background: none; border: none; bottom: 0; }
+.control.ui-btn-left, .trivia-btn.ui-btn-right { top: auto; bottom: 7px; margin: 0; }
+/*装修监理*/
+.baozhang-c h3 { background:#F0F0F0; padding:5px; }
+.baozhang-c .ui-listview > li, .baozhang-c .ui-listview > li p { white-space:normal; }
+
+.baozhang-c .img1 img { width:80px; margin:1em 0.5em 0; }
+.baozhang-c .img2 .ui-li-has-thumb > img:first-child { max-width:5em; margin:1em 0.5em 0; }
+
+/* 内容底部（权威 保障 实力） */
+.content-footer { margin-top:2em; font-size:0.9em; border-top:1px solid #EEE; }
+.content-footer a { font-weight:normal; text-decoration:none; }

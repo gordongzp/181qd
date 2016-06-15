@@ -1,0 +1,6 @@
+echo "# 181qd" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:gordongzp/181qd.git
+git push -u origin master

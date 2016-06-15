@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<css href="__COMMON__/jquery-ui/jquery-ui.min.css" />
+<css href="__THEME__/css/index.css" />
+<css href="__THEME__/font/font-awesome.min.css" />
+<css href="__COMMON__/css/perfect-scrollbar.min.css" />
+<style>html, body { overflow: visible;}</style>
+<script>
+
+var ADMIN_TEMPLATES_URL = '__THEME__';
+var LOADING_IMAGE = "__THEME__/images/loading.gif";
+var ADMIN_RESOURCE_URL = '__THEME__';
+</script>
+<js href="__COMMON__/js/jquery/jquery.js" />
+<js href="__COMMON__/jquery-ui/jquery-ui.min.js" />
+<js href="__COMMON__/jquery-ui/zh-CN.js" />
+<js href="__THEME__/js/admin.js" />
+<script src="__THEME__/dialog/dialog.js" id="dialog_js"></script>
+<js href="__THEME__/js/flexigrid.js" />
+<js href="__COMMON__/js/jquery/jquery.validation.min.js" />
+<js href="__THEME__/js/common.js" />
+<js href="__COMMON__/js/perfect-scrollbar.min.js" />
+<js href="__COMMON__/js/jquery/jquery.mousewheel.js" />
+</head>
+<body style="background-color: #FFF; overflow: auto;">
+	<js href="__COMMON__/js/jquery/jquery.picTip.js" /></head>
+	<div id="append_parent"></div>
+	<div id="ajaxwaitid"></div>
+
+	<div class="page">
+		<div class="fixed-bar">
+			<div class="item-title">
+				<a class="back" href="{:U('admin/group')}" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+				<div class="subject">
+					<h3>{$subject}</h3>
+					<h5>管理中心操作权限及分组设置</h5>
+				</div>
+			</div>
+		</div>
+		<div class="explanation" id="explanation">
+			<div class="title" id="checkZoom">
+				<i class="fa fa-lightbulb-o"></i>
+				<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+				<span id="explanationZoom" title="收起提示"></span> 
+			</div>
+			<ul>
+				<li>可添加一个权限组，并为其命名，方便添加管理员时使用。</li>
+				<li>可在标题处全选所有功能或根据功能模块逐一选择操作权限，提交保存后生效。</li>
+			</ul>
+		</div>
+		<form id="add_form" action="{:U('admin/save_role')}" method="post" style="margin-bottom: 50px;">
+			<input type="hidden" name="form_submit" value="ok" />
+			<div class="ncap-form-default">
+				<dl class="row">
+					<dt class="tit"><label for="role_name"><em>*</em>权限组</label></dt>
+					<dd class="opt">
+						<input type="text" id="role_name" maxlength="40" name="role_name" value="" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">为权限组设置特定名称，便于添加管理员时选择使用。</p>
+					</dd>
+				</dl>
+				<dl class="row">
+					<dt class="tit">设置权限</dt>
+					<dd class="opt">
+						<input id="limitAll" value="1" type="checkbox" class="checkbox">
+						全部操作
+						<p class="notic">勾选后选中全部操作功能，可根据需要从设置详情中进行分组设置。</p>
+					</dd>
+				</dl>
+			</div>
+			<div class="ncap-form-all">
+				<div class="title"><h3>{$ftitle}</h3></div>
+				<volist name="menu" id="m1">
+				<dl class="row">
+					<dt class="tit">
+						<span><input class="checkbox" type="checkbox" name="auth[]" value="{$m1.menu_id}" id="menu{$m1.menu_id}" nctype="modulesAll"><label for="menu{$m1.menu_id}">{$m1.menu_name}</label></span>
+					</dt>
+					<dd class="opt nobg nopd nobd nobs">
+						<volist name="m1.sub" id="m2">
+						<div class="ncap-account-container">
+							<h4>
+								<input class="checkbox" id="menu{$m2.menu_id}" name="auth[]" value="{$m2.menu_id}" type="checkbox" nctype="groupAll">
+								<label for="menu{$m2.menu_id}">{$m2.menu_name}</label>
+							</h4>
+							<ul class="ncap-account-container-list">
+								<volist name="m2.sub" id="m3">
+								<li>
+									<input class="checkbox" id="menu{$m3.menu_id}" name="auth[]" type="checkbox" value="{$m3.menu_id}">
+									<label for="menu{$m3.menu_id}">{$m3.menu_name}</label>
+								</li>
+								</volist>
+							</ul>
+						</div>
+						</volist>
+					</dd>
+				</dl>
+				</volist>
+				<div class="fix-bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+			</div>
+		</form>
+	</div>
+
+	<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+</html>
+<script>
+function selectLimit(name){
+    if($('#'+name).attr('checked')) {
+        $('.'+name).attr('checked',true);
+    }else {
+        $('.'+name).attr('checked',false);
+    }
+}
+$(document).ready(function(){
+	//按钮先执行验证再提交表单
+	$("#submitBtn").click(function(){
+	    if($("#add_form").valid()){
+	     $("#add_form").submit();
+		}
+	});
+
+    // 全选
+    $('#limitAll').click(function(){
+    	$('input[type="checkbox"]').attr('checked',$(this).attr('checked') == 'checked');
+    });
+    // 功能模块
+    $('input[nctype="modulesAll"]').click(function(){
+        $(this).parents('dt:first').next().find('input[type="checkbox"]').attr('checked',$(this).attr('checked') == 'checked');
+    });
+    // 功能组
+    $('input[nctype="groupAll"]').click(function(){
+        $(this).parents('h4:first').next().find('input[type="checkbox"]').attr('checked',$(this).attr('checked') == 'checked');
+    });
+	
+	$("#add_form").validate({
+		errorPlacement: function(error, element){
+			var error_td = element.parent('dd').children('span.err');
+            error_td.append(error);
+        },
+        rules : {
+            role_name : {
+                required : true,
+				remote	: {
+                    url :'{:U("admin/check_role_exist")}',
+                    type:'get',
+                    data:{
+                    	role_name : function(){
+                            return $('#role_name').val();
+                        }
+                    }
+                }
+            }
+        },
+        messages : {
+            role_name : {
+                required : '<i class="fa fa-exclamation-circle"></i>请输入',
+                remote   : '<i class="fa fa-exclamation-circle"></i>该名称已存在'
+            }
+        }
+	});
+});
+</script>

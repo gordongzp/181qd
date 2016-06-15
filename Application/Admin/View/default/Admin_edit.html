@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<css href="__COMMON__/jquery-ui/jquery-ui.min.css" />
+<css href="__THEME__/css/index.css" />
+<css href="__THEME__/font/font-awesome.min.css" />
+<css href="__COMMON__/css/perfect-scrollbar.min.csss" />
+<style>html, body { overflow: visible;}</style>
+<script>
+
+var ADMIN_TEMPLATES_URL = '__THEME__';
+var LOADING_IMAGE = "__THEME__/images/loading.gif";
+var ADMIN_RESOURCE_URL = '__THEME__';
+</script>
+<js href="__COMMON__/js/jquery/jquery.js" />
+<js href="__COMMON__/jquery-ui/jquery-ui.min.js" />
+<js href="__COMMON__/jquery-ui/zh-CN.js" />
+<js href="__THEME__/js/admin.js" />
+<script src="__THEME__/dialog/dialog.js" id="dialog_js"></script>
+<js href="__THEME__/js/flexigrid.js" />
+<js href="__COMMON__/js/jquery/jquery.validation.min.js" />
+<js href="__THEME__/js/common.js" />
+<js href="__COMMON__/js/perfect-scrollbar.min.js" />
+<js href="__COMMON__/js/jquery/jquery.mousewheel.js" />
+</head>
+<body style="background-color: #FFF; overflow: auto;">
+	<js href="__COMMON__/js/jquery/jquery.picTip.js" /></head>
+	<div id="append_parent"></div>
+	<div id="ajaxwaitid"></div>
+	<div class="page">
+		<div class="fixed-bar">
+			<div class="item-title"><a class="back" href="{:U('admin/index')}" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+				<div class="subject">
+					<h3>权限设置 - 添加管理员</h3>
+					<h5>管理中心操作权限及分组设置</h5>
+				</div>
+			</div>
+		</div>
+		<!-- 操作说明 -->
+		<div class="explanation" id="explanation">
+			<div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+				<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+				<span id="explanationZoom" title="收起提示"></span> 
+			</div>
+			<ul>
+				<li>可添加一名后台管理员，设置其后台登录用户名及密码，但不可登录网站前台。</li>
+				<li>管理员必须下属某个权限组，如无权限组选择请先完成“添加权限组”步骤。</li>
+			</ul>
+		</div>
+		
+		<form id="add_form" method="post" action="{:U('admin/save_admin')}">
+			<input type="hidden" name="admin_id" id="admin_id" value="{$admin_id}" />
+			<div class="ncap-form-default">
+				<dl class="row">
+					<dt class="tit">
+						<label for="admin_name"><em>*</em>登录名</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="admin_name" name="admin_name" value="{$admin_name}" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">3-15位字符，可由中文、英文、数字及“_”、“-”组成。</p>
+					</dd>
+				</dl>
+				<dl class="row">
+					<dt class="tit">
+						<label for="admin_password"><em>*</em>密码</label>
+					</dt>
+					<dd class="opt">
+						<input type="password" id="admin_password" name="admin_password" value="" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">6-20位字符，可由英文、数字及标点符号组成。留空表示不修改</p>
+					</dd>
+				</dl>
+				<dl class="row">
+					<dt class="tit">
+						<label for="admin_password"><em>*</em>确认密码</label>
+					</dt>
+					<dd class="opt">
+						<input type="password" id="admin_rpassword" name="admin_rpassword" value="" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">请再次输入您的密码。</p>
+					</dd>
+				</dl>
+				<dl class="row">
+					<dt class="tit">
+						<label for="gadmin_name"><em>*</em>权限组</label>
+					</dt>
+					<dd class="opt">
+						<select name="role_id" value="{$role_id}">
+							<volist name="group" id="r">
+							<option value="{$r.role_id}">{$r.role_name}</option>
+							</volist> 
+						</select>
+						<span class="err"></span>
+						<p class="notic">请选择一个权限组，如果还未设置，请先建立权限组后再添加管理员。</p>
+					</dd>
+				</dl>
+				<div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+			</div>
+		</form>
+	</div>
+	<script>
+	//按钮先执行验证再提交表
+	$(document).ready(function(){
+		//按钮先执行验证再提交表单
+		$("#submitBtn").click(function(){
+			if($("#add_form").valid()){
+			 $("#add_form").submit();
+			}
+		});
+		
+		$("#add_form").validate({
+			errorPlacement: function(error, element){
+				var error_td = element.parent('dd').children('span.err');
+				error_td.append(error);
+			},
+			
+			rules : {
+				admin_name : {
+					required : true,
+					minlength: 3,
+					maxlength: 20,
+					remote	: {
+						url :'{:U("admin/check_admin_exist")}',
+						type:'get',
+						data:{
+							admin_name : function(){
+								return $('#admin_name').val();
+							},
+							admin_id : function(){
+								return $('#admin_id').val();
+							}
+						}
+					}
+				},
+				admin_password : {
+					minlength: 6,
+					maxlength: 20
+				},
+				admin_rpassword : {
+					equalTo  : '#admin_password'
+				},
+				role_id : {
+					required : true
+				}        
+			},
+			messages : {
+				admin_name : {
+					required : '<i class="fa fa-exclamation-circle"></i>登录名不能为空',
+					minlength: '<i class="fa fa-exclamation-circle"></i>登录名长度为3-20',
+					maxlength: '<i class="fa fa-exclamation-circle"></i>登录名长度为3-20',
+					remote   : '<i class="fa fa-exclamation-circle"></i>该名称已存在'
+				},
+				admin_password : {
+					minlength: '<i class="fa fa-exclamation-circle"></i>密码长度为6-20',
+					maxlength: '<i class="fa fa-exclamation-circle"></i>密码长度为6-20'
+				},
+				admin_rpassword : {
+					equalTo  : '<i class="fa fa-exclamation-circle"></i>两次输入的密码不一致，请重新输入'
+				},
+				role_id : {
+					required : '<i class="fa fa-exclamation-circle"></i>请选择一个权限组'
+				}
+			}
+		});
+	});
+	</script> 
+	<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+</html>
