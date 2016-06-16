@@ -23,6 +23,12 @@ class AdminModel extends RelationModel{
 			'mapping_name' => 'role',
 			'foreign_key' => 'role_id',
 		),
+		'tour' => array(
+			'mapping_type' => self::HAS_MANY,
+			'class_name' => 'tour',
+			'mapping_name' => 'tour',
+			'foreign_key' => 'admin_id',
+		),
 		
 		
 	);

@@ -62,9 +62,9 @@
 			$("#flexigrid").flexigrid({
 				url: '{:U("tour/index")}',
 				colModel : [
-				{display: '操作', name : 'operation', width : 200, sortable : false, align: 'center', className: 'handle'},
+				{display: '操作', name : 'operation', width : 250, sortable : false, align: 'center', className: 'handle'},
 				{display: '排序', name : 'sort', width : 60, sortable : true, align: 'center'},
-				{display: '文章标题', name : 'title', width : 300, sortable : false, align: 'left'},
+				{display: '全景标题', name : 'title', width : 300, sortable : false, align: 'left'},
 				{display: '缩略图', name : 'pic', width : 60, sortable : false, align: 'center'},					
 				{display: '场景数', name : 'scene', width : 60, sortable : false, align: 'center'},					
 				{display: '分类', name : 'cat_name', width : 80, sortable : false, align: 'center'},
@@ -73,8 +73,11 @@
 				{display: '更新时间', name : 'update_time', width : 130, sortable : true, align: 'center', className: 'column-a'},
 				],
 				buttons : [
+
 				{display: '<i class="fa fa-plus"></i>添加全景', name : 'add', bclass : 'add', title : '添加新的全景', onpress : fg_operation },
 				{display: '<i class="fa fa-trash"></i>批量删除', name : 'del', bclass : 'del', title : '将选定全景批量删除', onpress : fg_operation },
+				{display: '<i class="fa fa-truck"></i>一键生成', name : 'xml', bclass : 'add', title : '一键生成全景', onpress : fg_operation },
+				
 				],
 				searchitems : [
 				{display: '全景标题', name : 'title'},
@@ -99,6 +102,8 @@
 					itemids[i] = $(this).attr('data-id');
 				});
 				fg_del(itemids);
+			}else if (name == 'xml'){
+				window.location.href = "{:U('kp/file_put_all')}";
 			}
 		}
 

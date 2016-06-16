@@ -6,20 +6,90 @@ class KpAction extends CommonAction {
 	public function __construct(){
 		parent::__construct();
 	}
-	
+	public function show(){
+		$id=I('id');
+		echo '<script>window.location.href=\'./Public/viewer/examples/'.$id.'/index.html\';</script>';
+	}
+	public function file_put_and_show(){
+		$this->file_put();
+		$this->show();
+	}
 	public function file_put(){
 		$id=I('id');
-		$tour=D('Tour')->relation('scene')->where('tour_id='.$id)->find();
-		foreach ($tour['scene'] as $k => $v) {
-			$scene_ids[]=$v['scene_id'];
+		$this->put($id);
+	}
+	public function file_put_all(){
+		$data=D('Admin')->relation('tour')->find(session('admin.admin_id'));
+		foreach ($data['tour'] as $k => $tour) {
+			$this->put($tour['tour_id']);
 		}
-		$scenes=D('scene')->relation(true)->where(array('scene_id'=>array('in',$scene_ids)))->select();
+		$this->success('生成完毕',U('tour/index'));
+	}
+	public function put($id){
+		$tour=D('Tour')->relation('scene')->where('tour_id='.$id)->find();
+		if ($tour['scene']) {
+			foreach ($tour['scene'] as $k => $v) {
+				$scene_ids[]=$v['scene_id'];
+			}
+			$scenes=D('scene')->relation(true)->where(array('scene_id'=>array('in',$scene_ids)))->select();
+		}
+		
 		dump($tour);
 		dump($scenes);
 
-
-
+		//检查是否有工作目录,有则删除,没有则创建
+		if (is_dir('./Public/viewer/examples/'.$id)){
+			delDirAndFile('./Public/viewer/examples/'.$id);
+		}
+		recurse_copy('./Public/viewer/examples/template','./Public/viewer/examples/'.$id);
+			//修改index入口文件
 		$str=<<<str
+<!DOCTYPE html>
+<html>
+<head>
+<!-- redirect to the root krpano.html to avoid local browser restrictions -->
+<meta http-equiv="refresh" content="0; url=../../krpano.html?xml=examples/{$id}/tour.xml" />
+<style>body{background-color:#000000;}</style>
+</head>
+</html>
+str;
+		file_put_contents('./Public/viewer/examples/'.$id.'/index.html',$str);
+
+		//场景文件组织
+		foreach ($scenes as $k => $scene) {
+			//检查是否有场景目录，没有则创建
+			mkdir('./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id']);
+			//构建场景thumb
+			copy($scene['pic'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/thumb.jpg');
+			//构建场景cube
+			foreach ($scene['attachment'] as $key => $attachment) {
+				switch ($key) {
+					case 0:
+					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_r.jpg');
+					break;
+					case 1:
+					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_l.jpg');
+					break;
+					case 2:
+					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_b.jpg');
+					break;
+					case 3:
+					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_f.jpg');
+					break;
+					case 4:
+					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_d.jpg');
+					break;
+					case 5:
+					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_u.jpg');
+					break;
+					default:
+					break;
+				}	
+			}
+		}
+
+
+$str=<<<str
 <!--
 	krpano Virtual Tour Demo - Kuchlerhaus
 		http://krpano.com/tours/kuchlerhaus/
@@ -189,92 +259,33 @@ class KpAction extends CommonAction {
 
 	<!-- scenes -->
 
+str;
 
-	<scene name="scene_aussen" title="aussen" onstart="" thumburl="panos/aussen/thumb.jpg">
+	foreach ($scenes as $k => $scene) {
+
+$str.=<<<str
+
+	<scene name="s{$scene['scene_id']}" title="s{$scene['scene_id']}" onstart="" thumburl="panos/{$scene['scene_id']}/thumb.jpg">
 
 		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="95" fovmin="45" fovmax="120" />
 
-		<preview url="panos/aussen/preview.jpg" />
-
 		<image>
-			<cube url="panos/aussen/mobile_%s.jpg" />
+			<cube url="panos/{$scene['scene_id']}/mobile_%s.jpg" />
 		</image>
-
-		<hotspot name="spot_eingang"   style="arrowspot1" ath="1"     atv="10"  scale="0.40" onclick="transition(spot_eingang,     1.0,  0.0, 0, scene_eingang,     -86, 3, 45);" />
-		<hotspot name="spot_werkstatt" style="arrowspot2" ath="80.5"  atv="3"   scale="0.20" onclick="transition(spot_werkstatt,  77.0,  2.6, 0, scene_werkstatt,  347, 7, 63);" />
-		<hotspot name="spot_galerie"   style="arrowspot5" ath="-66.1" atv="3.3" scale="0.23" onclick="transition(spot_galerie,   -63.9,  2.1, 0, scene_galerie,                 -272, 0, 40);" />
 
 	</scene>
 
+str;
 
-	<scene name="scene_eingang" title="eingang" onstart="" thumburl="panos/eingang/thumb.jpg">
+	}
 
-		<view hlookat="-76.73" vlookat="8.48" fovtype="MFOV" fov="110" fovmin="45" fovmax="120" />
-
-		<preview url="panos/eingang/preview.jpg" />
-
-		<image>
-			<cube url="panos/eingang/mobile_%s.jpg" />
-		</image>
-
-		<hotspot name="spot_aussen"    style="arrowspot3" ath="92"   atv="20"   scale="0.5"               onclick="transition(spot_aussen,    92.0,   5.0, 0, scene_aussen,     178,  6, 38);" />
-		<hotspot name="spot_galerie"   style="arrowspot2" ath="265"  atv="-3"   scale="0.3"               onclick="transition(spot_galerie,   260.0, -3.0, 0, scene_galerie,   -136,  0, 34);" />
-		<hotspot name="spot_werkstatt" style="arrowspot1" ath="19.4" atv="16.1" scale="0.55" rotate="-40" onclick="transition(spot_werkstatt,  13.1, 10.2, 0, scene_werkstatt,  351, 12, 25);" />
-
-	</scene>
-
-
-	<scene name="scene_galerie" title="galerie" onstart="" thumburl="panos/galerie/thumb.jpg">
-
-		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="98" fovmin="45" fovmax="120" />
-
-		<preview url="panos/galerie/preview.jpg" />
-
-		<image>
-			<cube url="panos/galerie/mobile_%s.jpg" />
-		</image>
-
-		<hotspot name="spot_eingang"  style="arrowspot5" ath="-140.0" atv="5.0"  scale="0.30" onclick="transition(spot_eingang, -135.0, 2.0, 0, scene_eingang,  -98,  0, 31);" />
-		<hotspot name="spot_aussen"   style="arrowspot1" ath="106.9"  atv="23.3" scale="0.45" onclick="transition(spot_aussen,   106.9, 0.0, 0, scene_aussen,  -373, -6, 20);" />
-
-		<hotspot name="spot_zoombild" style="zoomspot"   ath="138.6"  atv="3.2"  scale="0.60" zorder="1" onclick="flyin( zoombild );" />
-
-		<hotspot name="zoombild" url="skin/bild.jpg"
-		         ath="133.5846" atv="-2.4199"
-		         distorted="true"
-		         zorder="2"
-		         scale="0.1376"
-		         rx="-1.75" ry="-44.75" rz="0.7571"
-		         enabled="false"
-		         visible="false"
-		         alpha="0.0"
-		         flying="0.0"
-		         onclick="flyout(zoombild);"
-		         />
-
-	</scene>
-
-
-	<scene name="scene_werkstatt" title="werkstatt" onstart="" thumburl="panos/werkstatt/thumb.jpg">
-
-		<view hlookat="208.6" vlookat="24.84" fovtype="MFOV" fov="108.53" fovmin="45" fovmax="120" />
-
-		<preview url="panos/werkstatt/preview.jpg" />
-
-		<image>
-			<cube url="panos/werkstatt/mobile_%s.jpg" />
-		</image>
-
-		<hotspot name="spot_eingang"  style="arrowspot1" ath="20.8" atv="13.3" scale="0.45" onclick="transition(spot_eingang, 20.7, 5.1, 0, scene_eingang, -290, 6, 20.8);" />
-		<hotspot name="spot_aussen"   style="arrowspot2" ath="-6.5" atv="6.2"  scale="0.50" onclick="transition(spot_aussen, -10.1, 5.2, 0, scene_aussen,    76, 2, 20.8);" />
-
-	</scene>
+		$str.=<<<str
 
 </krpano>
 
 str;
-		file_put_contents('./Public/viewer/examples/tour/tour.xml',$str);
+		file_put_contents('./Public/viewer/examples/'.$id.'/tour.xml',$str);
+
 	}
-	
 	
 }

@@ -61,6 +61,17 @@
 						<p class="notic">热点名称不能为空且必须小于10个字</p>
 					</dd>
 				</dl>
+
+				<dl class="row">
+					<dt class="tit">
+						<label for="type"><em>*</em>热点类型</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="type" name="type" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">1：导航，2：链接，3：放大镜...</p>
+					</dd>
+				</dl>
 				
 				<dl class="row">
 					<dt class="tit">
@@ -100,15 +111,23 @@
 				},
 				sort:{
 					digits:true,
+				},
+				type:{
+					required:true,
+					range:[1,3],
 				}
 			},
 			messages:{
 				hotspot_name:{
-					required:'<i class="fa fa-exclamation-circle"></i>分类名称不能为空！',
-					maxlength:'<i class="fa fa-exclamation-circle"></i>分类名称长度少于10个字符！',
+					required:'<i class="fa fa-exclamation-circle"></i>热点名称不能为空！',
+					maxlength:'<i class="fa fa-exclamation-circle"></i>热点名称长度少于10个字符！',
 				},
 				sort:{
 					digits:'<i class="fa fa-exclamation-circle"></i>排列序号格式不合法！'
+				},
+				type:{
+					required:'<i class="fa fa-exclamation-circle"></i>类型不能为空！',
+					range:'<i class="fa fa-exclamation-circle"></i>类型格式不合法！'
 				}
 			}
 		});

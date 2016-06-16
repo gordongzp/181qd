@@ -106,7 +106,7 @@
 												<a href="javascript:void(0);"><img alt="" src="<?php echo ($file["path"]); ?>"></a>
 											</div>
 											<a title="删除" class="del" href="javascript:del_file_upload(<?php echo ($file["atta_id"]); ?>,'file_<?php echo ($file["scene_id"]); ?>_<?php echo ($file["atta_id"]); ?>','<?php echo ($file["path"]); ?>');">X</a>
-											<a class="inset" href="javascript:insert_editor('<?php echo ($file["path"]); ?>');"><i class="fa fa-clipboard"></i>插入图片</a>
+											<a class="inset" href="javascript:insert_editor('<?php echo ($file["path"]); ?>');"><i class="fa fa-cogs"></i></a>
 										</li><?php endforeach; endif; else: echo "" ;endif; endif; ?>
 							</ul>
 						</div>

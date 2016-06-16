@@ -50,10 +50,17 @@ class TourAction extends CommonAction {
 	}
 	public function del(){
 		$del_ids = explode(',',I('id'));
+		//删除工作目录
+		foreach ($del_ids as $k => $id) {
+			if (is_dir('./Public/viewer/examples/'.$id)){
+				delDirAndFile('./Public/viewer/examples/'.$id);
+			}
+		}
 		$result2 = D('Tour')->where(array('tour_id'=>array('in',$del_ids)))->delete();
 		if($result2 === false){
 			$this->error('删除失败');
 		}else{
+
 			$this->success('删除成功',U('tour/index'));
 		}
 	}

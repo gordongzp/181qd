@@ -224,7 +224,7 @@
 		$("#pic").val("");
 	}
 	function add_uploadedfile(data){
-		var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment[][path]" value="' + data.file_path  + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path  + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id +',\'' + data.file_path  + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path  + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+		var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment[][path]" value="' + data.file_path  + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path  + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id +',\'' + data.file_path  + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path  + '\');" class="inset"><i class="fa fa-cogs"></i></a></li>';
 		$('#thumbnails > ul').prepend(newImg);
 	}
 	

@@ -193,7 +193,7 @@ function tour_xml_encode($data, $root='rows', $item='item', $attr='', $id='id', 
 	$xml   .= "<total>".$data['total']."</total>";
 	foreach($data['data'] as $v){
 		$xml.= "<row id='".$v['tour_id']."'>"; 
-		$xml.= "<cell><![CDATA[<a class='btn green' href='".U('kp/file_put',array('id'=>$v['tour_id']))."'><i class='fa fa-video-camera'></i>预览</a><a class='btn blue' href='".U('tour/edit',array('id'=>$v['tour_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['tour_id'].");'><i class='fa fa-trash-o'></i>删除</a>]]></cell>";
+		$xml.= "<cell><![CDATA[<a class='btn blue' href='".U('tour/edit',array('id'=>$v['tour_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['tour_id'].");'><i class='fa fa-trash-o'></i>删除</a><a class='btn green' href='".U('kp/file_put_and_show',array('id'=>$v['tour_id']))."'><i class='fa fa-video-camera'></i>预览</a>]]></cell>";
 		$xml.= "<cell>".$v['sort']."</cell>";
 		$xml.= "<cell>".$v['title']."</cell>";
 		$xml.= "<cell><![CDATA[<a href='javascript:void(0);' class='pic-thumb-tip' onMouseOut='toolTip()' onMouseOver='toolTip(\"<img src=".$v['pic'].">\")'><i class='fa fa-picture-o'></i></a>]]></cell>";
@@ -256,4 +256,37 @@ function upload_file($savepath,$field){
 	}
 }
 
+function recurse_copy($src,$dst) {  // 原目录，复制到的目录
+    $dir = opendir($src);
+    @mkdir($dst);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            if ( is_dir($src . '/' . $file) ) {
+                recurse_copy($src . '/' . $file,$dst . '/' . $file);
+            }
+            else {
+                copy($src . '/' . $file,$dst . '/' . $file);
+            }
+        }
+    }
+    closedir($dir);
+}
+
+//循环删除目录和文件函数
+function delDirAndFile( $dirName )
+{
+	if ( $handle = opendir( "$dirName" ) ) {
+		while ( false !== ( $item = readdir( $handle ) ) ) {
+			if ( $item != "." && $item != ".." ) {
+				if ( is_dir( "$dirName/$item" ) ) {
+					delDirAndFile( "$dirName/$item" );
+				} else {
+					unlink( "$dirName/$item" );
+				}
+			}
+		}
+		closedir( $handle );
+		rmdir( $dirName );
+	}
+}
 
