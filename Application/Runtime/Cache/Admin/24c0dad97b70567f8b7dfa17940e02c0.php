@@ -62,11 +62,11 @@
 			$("#flexigrid").flexigrid({
 				url: '<?php echo U("tour/index");?>',
 				colModel : [
-				{display: '操作', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+				{display: '操作', name : 'operation', width : 200, sortable : false, align: 'center', className: 'handle'},
 				{display: '排序', name : 'sort', width : 60, sortable : true, align: 'center'},
 				{display: '文章标题', name : 'title', width : 300, sortable : false, align: 'left'},
 				{display: '缩略图', name : 'pic', width : 60, sortable : false, align: 'center'},					
-				{display: '场景数', name : 'scence', width : 60, sortable : false, align: 'center'},					
+				{display: '场景数', name : 'scene', width : 60, sortable : false, align: 'center'},					
 				{display: '分类', name : 'cat_name', width : 80, sortable : false, align: 'center'},
 				{display: '浏览量', name : 'view_times', width : 80, sortable : false, align: 'center'},
 				{display: '状态', name : 'status', width : 80, sortable : true, align: 'center'},
@@ -108,9 +108,9 @@
 			};
 			id = ids.join(',');
 			if(confirm('确认这些文章吗？')){
-				$.getJSON('<?php echo U("tour/get_scence");?>', {id:id}, function(data){
+				$.getJSON('<?php echo U("tour/get_scene");?>', {id:id}, function(data){
 					if (data) {
-						$.getJSON('<?php echo U("scence/del");?>', {id:data.join(',')}, function(data2){
+						$.getJSON('<?php echo U("scene/del");?>', {id:data.join(',')}, function(data2){
 							$.getJSON('<?php echo U("tour/del");?>', {id:id}, function(data3){
 								if (data3.status) {
 									location.reload();

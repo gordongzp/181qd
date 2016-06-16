@@ -1,3 +1,25 @@
+<?php
+namespace Admin\Action;
+use Think\Action;
+class KpAction extends CommonAction {
+	
+	public function __construct(){
+		parent::__construct();
+	}
+	
+	public function file_put(){
+		$id=I('id');
+		$tour=D('Tour')->relation('scene')->where('tour_id='.$id)->find();
+		foreach ($tour['scene'] as $k => $v) {
+			$scene_ids[]=$v['scene_id'];
+		}
+		$scenes=D('scene')->relation(true)->where(array('scene_id'=>array('in',$scene_ids)))->select();
+		dump($tour);
+		dump($scenes);
+
+
+
+		$str=<<<str
 <!--
 	krpano Virtual Tour Demo - Kuchlerhaus
 		http://krpano.com/tours/kuchlerhaus/
@@ -249,3 +271,10 @@
 	</scene>
 
 </krpano>
+
+str;
+		file_put_contents('./Public/viewer/examples/tour/tour.xml',$str);
+	}
+	
+	
+}

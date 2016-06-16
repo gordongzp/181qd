@@ -8,7 +8,7 @@ class CommonAction extends Action {
 	public function __construct(){
 		parent::__construct();
 		$this->check_login();
-		//$this->check_auth();
+		// $this->check_auth();
 		
 	}
 	

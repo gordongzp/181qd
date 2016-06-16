@@ -21,11 +21,11 @@ class TourModel extends RelationModel{
 	}
 	
 	protected $_link = array(
-		'scence' => array(
+		'scene' => array(
 			'mapping_type'  => self::HAS_MANY,    
-			'class_name'    => 'scence',    
+			'class_name'    => 'scene',    
 			'foreign_key'   => 'tour_id',   
-			'mapping_name'  => 'scence',
+			'mapping_name'  => 'scene',
 			),
 		'category' => array(
 			'mapping_type'  => self::BELONGS_TO,    

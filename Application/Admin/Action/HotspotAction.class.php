@@ -14,7 +14,7 @@ class HotspotAction extends CommonAction {
 	
 	public function index(){
 		$model = D('Hotspot');
-		$list = $model->where('scence_id='.$this->sid)->order('sort')->select();
+		$list = $model->where('scene_id='.$this->sid)->order('sort')->select();
 		$this->assign('list',$list);
 		$this->set_back();
 		$this->display();

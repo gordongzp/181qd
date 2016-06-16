@@ -1,4 +1,4 @@
-<!doctype html>
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -7,35 +7,35 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-	<css href="__COMMON__/jquery-ui/jquery-ui.min.css" />
-	<css href="__THEME__/css/index.css" />
-	<css href="__THEME__/font/font-awesome.min.css" />
-	<css href="__COMMON__/css/perfect-scrollbar.min.css" />
+	<link rel="stylesheet" type="text/css" href="/Public/Common/jquery-ui/jquery-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="/Public/Admin/css/index.css" />
+	<link rel="stylesheet" type="text/css" href="/Public/Admin/font/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="/Public/Common/css/perfect-scrollbar.min.css" />
 	<style>html, body { overflow: visible;}</style>
 	<script>
-		var ADMIN_TEMPLATES_URL = '__THEME__';
-		var LOADING_IMAGE = "__THEME__/images/loading.gif";
-		var ADMIN_RESOURCE_URL = '__THEME__';
+		var ADMIN_TEMPLATES_URL = '/Public/Admin';
+		var LOADING_IMAGE = "/Public/Admin/images/loading.gif";
+		var ADMIN_RESOURCE_URL = '/Public/Admin';
 	</script>
-	<js href="__COMMON__/js/jquery/jquery.js" />
-	<js href="__COMMON__/jquery-ui/jquery-ui.min.js" />
-	<js href="__COMMON__/jquery-ui/zh-CN.js" />
-	<js href="__THEME__/js/admin.js" />
-	<script src="__THEME__/dialog/dialog.js" id="dialog_js"></script>
-	<js href="__THEME__/js/flexigrid.js" />
-	<js href="__COMMON__/js/jquery/jquery.validation.min.js" />
-	<js href="__THEME__/js/common.js" />
-	<js href="__COMMON__/js/perfect-scrollbar.min.js" />
-	<js href="__COMMON__/js/jquery/jquery.mousewheel.js" />
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/Public/Common/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/Public/Common/jquery-ui/zh-CN.js"></script>
+	<script type="text/javascript" src="/Public/Admin/js/admin.js"></script>
+	<script src="/Public/Admin/dialog/dialog.js" id="dialog_js"></script>
+	<script type="text/javascript" src="/Public/Admin/js/flexigrid.js"></script>
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.validation.min.js"></script>
+	<script type="text/javascript" src="/Public/Admin/js/common.js"></script>
+	<script type="text/javascript" src="/Public/Common/js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.mousewheel.js"></script>
 </head>
 <body style="background-color: #FFF; overflow: auto;">
-	<js href="__COMMON__/js/jquery/jquery.picTip.js" /></head>
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.picTip.js"></script></head>
 	<div id="append_parent"></div>
 	<div id="ajaxwaitid"></div>
 	<div class="page">
 		<div class="fixed-bar">
 			<div class="item-title">
-				{$back_htn_html}
+				<?php echo ($back_htn_html); ?>
 				<div class="subject">
 					<h3>场景管理 - 场景文章</h3>
 					<h5>场景索引和管理</h5>
@@ -46,7 +46,7 @@
 		
 		<form id="add_form" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="form_submit" value="ok" />
-			<input type="hidden" name="tour_id" value="{$tid}" />
+			<input type="hidden" name="tour_id" value="<?php echo ($tid); ?>" />
 
 			<div class="ncap-form-default">
 				<div class="title"><h3>基本信息</h3></div>
@@ -57,7 +57,7 @@
 						<label for="title"><em>*</em>场景标题</label>
 					</dt>
 					<dd class="opt">
-						<input type="text" id="title" name="title" value="{$title}" class="input-txt">
+						<input type="text" id="title" name="title" value="<?php echo ($title); ?>" class="input-txt">
 						<span class="err"></span>
 						<p class="notic">单页标题不能超过200个任意字符。</p>
 					</dd>
@@ -69,11 +69,9 @@
 					</dt>
 					<dd class="opt">
 						<div class="input-file-show">
-							<neq name="pic" value="">
-								<span class="show" id="show_pic">
-									<a class="nyroModal" rel="gal" href="{$pic}"> <img src="{$pic}" onMouseOver="toolTip('<img src={$pic}>')" onMouseOut="toolTip()"></i></a>
-								</span>
-							</neq>
+							<?php if(($pic) != ""): ?><span class="show" id="show_pic">
+									<a class="nyroModal" rel="gal" href="<?php echo ($pic); ?>"> <img src="<?php echo ($pic); ?>" onMouseOver="toolTip('<img src=<?php echo ($pic); ?>>')" onMouseOut="toolTip()"></i></a>
+								</span><?php endif; ?>
 							<span class="type-file-box">
 								<input type="file" class="type-file-file" id="file_pic" name="file_pic" size="30" hidefocus="true"  nc_type="upload_file_pic" title="">
 								<input type='text' name='textfield' id='textfield' class='type-file-text' />
@@ -123,7 +121,7 @@
 						<label for="seo_title">SEO标题</label>
 					</dt>
 					<dd class="opt">
-						<input id="seo_title" name="seo_title" value="{$seo_title}"  class="input-txt" type="text" />
+						<input id="seo_title" name="seo_title" value="<?php echo ($seo_title); ?>"  class="input-txt" type="text" />
 					</dd>
 				</dl>
 				
@@ -132,7 +130,7 @@
 						<label for="seo_keywords">SEO关键字</label>
 					</dt>
 					<dd class="opt">
-						<input id="seo_keywords" name="seo_keywords" value="{$seo_keywords}" class="input-txt" type="text" />
+						<input id="seo_keywords" name="seo_keywords" value="<?php echo ($seo_keywords); ?>" class="input-txt" type="text" />
 					</dd>
 				</dl>
 				
@@ -141,7 +139,7 @@
 						<label for="seo_description">SEO描述</label>
 					</dt>
 					<dd class="opt">
-						<textarea name="seo_description" rows="6" class="tarea" id="seo_description">{$seo_description}</textarea>
+						<textarea name="seo_description" rows="6" class="tarea" id="seo_description"><?php echo ($seo_description); ?></textarea>
 					</dd>
 				</dl>
 				
@@ -149,13 +147,13 @@
 			</div>
 		</form>
 	</div>
-	<js href="__THEME__/kindeditor/kindeditor-min.js" />
-	<js href="__THEME__/kindeditor/config.js" />
-	<js href="__THEME__/kindeditor/lang/zh_CN.js" />
-	<js href="__COMMON__/js/jquery/jquery.iframe-transport.js" />
-	<js href="__COMMON__/jquery-ui/jquery.ui.widget.js" />
-	<js href="__COMMON__/js/jquery/jquery.fileupload.js" />
-	<js href="__COMMON__/js/jquery/jquery.nyroModal.js" />
+	<script type="text/javascript" src="/Public/Admin/kindeditor/kindeditor-min.js"></script>
+	<script type="text/javascript" src="/Public/Admin/kindeditor/config.js"></script>
+	<script type="text/javascript" src="/Public/Admin/kindeditor/lang/zh_CN.js"></script>
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.iframe-transport.js"></script>
+	<script type="text/javascript" src="/Public/Common/jquery-ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.fileupload.js"></script>
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.nyroModal.js"></script>
 	<script>
 		var KE;
 		KindEditor.ready(function(K) {
@@ -184,7 +182,7 @@
 		$('input[name="fileupload"]').each(function(){
 			$(this).fileupload({
 				dataType: 'json',
-				url: '{:U("scence/upload_attachment")}',
+				url: '<?php echo U("scene/upload_attachment");?>',
 				done: function (e,json){
 					var data = json.result;
 					if(data.status==1){
@@ -201,7 +199,7 @@
 			}
 		});
 		
-		$('#cat_id').val('{$cat_id}')
+		$('#cat_id').val('<?php echo ($cat_id); ?>')
 		
 		$("#add_form").validate({
 			errorPlacement: function(error, element){
@@ -238,8 +236,8 @@
 		if(!window.confirm('您确定要删除吗?')){
 			return;
 		}
-		var nid = '{$scence_id}';
-		$.getJSON('{:U("scence/remove_attachment")}', {'aid':aid,'nid':nid,'file_path':file_path},function(json){
+		var nid = '<?php echo ($scene_id); ?>';
+		$.getJSON('<?php echo U("scene/remove_attachment");?>', {'aid':aid,'nid':nid,'file_path':file_path},function(json){
 			if(json.status==1){
 				$('#' + file_id).remove();
 			}else{

@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Action;
 use Think\Action;
-class ScenceAction extends CommonAction {
+class SceneAction extends CommonAction {
 	private $tid;
 	public function __construct(){
 		parent::__construct();
@@ -12,7 +12,7 @@ class ScenceAction extends CommonAction {
 		$this->assign('tid',$this->tid);
 	}
 	public function index(){
-		$model = D('Scence');
+		$model = D('Scene');
 		if(IS_AJAX){
 			$page = I('curpage',1,'trim');
 			$rp = I('rp',15,'trim');
@@ -27,7 +27,7 @@ class ScenceAction extends CommonAction {
 			$total = $model->where($where)->count();
 			$data = $model->where($where)->relation(true)->order($order)->page($page.','.$rp)->select();
 			header('Content-Type:text/xml; charset=utf-8');
-			exit(scence_xml_encode(array('page'=>$page,'total'=>$total,'data'=>$data)));
+			exit(scene_xml_encode(array('page'=>$page,'total'=>$total,'data'=>$data)));
 		}else{
 			$this->set_back();
 			$this->display();
@@ -47,7 +47,7 @@ class ScenceAction extends CommonAction {
 		if(IS_POST && I('form_submit')=='ok'){
 			$this->save_news();
 		}else{
-			$info = D('Scence')->relation('attachment')->find(I('id'));
+			$info = D('Scene')->relation('attachment')->find(I('id'));
 			$this->set_back();
 			$this->assign($info);
 			$this->display();
@@ -55,22 +55,22 @@ class ScenceAction extends CommonAction {
 	}
 	public function del(){
 		$del_ids = explode(',',I('id'));
-		$attachment = D('ScenceAttachment')->field('path')->where(array('scence_id'=>array('in',$del_ids)))->select();
-		$result3=D('Hotspot')->where(array('scence_id'=>array('in',$del_ids)))->delete();
-		$result1 = D('ScenceAttachment')->where(array('scence_id'=>array('in',$del_ids)))->delete();
-		$result2 = D('Scence')->relation('attachment')->where(array('scence_id'=>array('in',$del_ids)))->delete();
+		$attachment = D('SceneAttachment')->field('path')->where(array('scene_id'=>array('in',$del_ids)))->select();
+		$result3=D('Hotspot')->where(array('scene_id'=>array('in',$del_ids)))->delete();
+		$result1 = D('SceneAttachment')->where(array('scene_id'=>array('in',$del_ids)))->delete();
+		$result2 = D('Scene')->relation('attachment')->where(array('scene_id'=>array('in',$del_ids)))->delete();
 		if($result2 === false){
 			$this->error('删除失败');
 		}else{
 			foreach($attachment as $f){
 				unlink($f['path']);
 			}
-			$this->success('删除成功',U('scence/index'));
+			$this->success('删除成功',U('scene/index'));
 		}
 	}
 	
 	private function save_news(){
-		$model = D('Scence');
+		$model = D('Scene');
 		$attachment = I('attachment');
 		if(false === $data = $model->create()){
 			$e = $model->getError();
@@ -97,7 +97,7 @@ class ScenceAction extends CommonAction {
 		if($result === false){
 			$this->error('保存失败');
 		}else{
-			$this->success('保存成功',U('Scence/index'));
+			$this->success('保存成功',U('Scene/index'));
 		}
 	}
 	
@@ -114,7 +114,7 @@ class ScenceAction extends CommonAction {
 		$nid = I('nid');
 		$res1 = true;
 		if($aid && $nid){
-			$res1 = D('ScenceAttachment')->where(array('atta_id'=>$aid,'scence_id'=>$nid))->delete();
+			$res1 = D('SceneAttachment')->where(array('atta_id'=>$aid,'scene_id'=>$nid))->delete();
 		}
 		$res2 = unlink($file_path);
 		if($res1 && $res2){

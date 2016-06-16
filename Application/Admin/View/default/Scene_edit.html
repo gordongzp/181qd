@@ -46,7 +46,7 @@
 		
 		<form id="add_form" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="form_submit" value="ok" />
-			<input type="hidden" name="scence_id" value="{$scence_id}" />
+			<input type="hidden" name="scene_id" value="{$scene_id}" />
 			<div class="ncap-form-default">
 				<div class="title"><h3>基本信息</h3></div>
 				
@@ -103,13 +103,13 @@
 							<ul>
 								<neq name="attachment" value="">
 									<volist name="attachment" id="file">
-										<li id="file_{$file.scence_id}_{$file.atta_id}">
+										<li id="file_{$file.scene_id}_{$file.atta_id}">
 											<input type="hidden" value="{$file.path}" name="attachment[{$i}][path]">
 											<input type="hidden" value="{$file.atta_id}" name="attachment[{$i}][atta_id]">
 											<div class="thumb-list-pics">
 												<a href="javascript:void(0);"><img alt="" src="{$file.path}"></a>
 											</div>
-											<a title="删除" class="del" href="javascript:del_file_upload({$file.atta_id},'file_{$file.scence_id}_{$file.atta_id}','{$file.path}');">X</a>
+											<a title="删除" class="del" href="javascript:del_file_upload({$file.atta_id},'file_{$file.scene_id}_{$file.atta_id}','{$file.path}');">X</a>
 											<a class="inset" href="javascript:insert_editor('{$file.path}');"><i class="fa fa-clipboard"></i>插入图片</a>
 										</li>
 									</volist>
@@ -199,7 +199,7 @@
 		$('input[name="fileupload"]').each(function(){
 			$(this).fileupload({
 				dataType: 'json',
-				url: '{:U("scence/upload_attachment")}',
+				url: '{:U("scene/upload_attachment")}',
 				done: function (e,json){
 					var data = json.result;
 					if(data.status==1){
@@ -255,8 +255,8 @@
 		if(!window.confirm('您确定要删除吗?')){
 			return;
 		}
-		var nid = '{$scence_id}';
-		$.getJSON('{:U("scence/remove_attachment")}', {'aid':aid,'nid':nid,'file_path':file_path},function(json){
+		var nid = '{$scene_id}';
+		$.getJSON('{:U("scene/remove_attachment")}', {'aid':aid,'nid':nid,'file_path':file_path},function(json){
 			if(json.status==1){
 				$('#' + file_id).remove();
 			}else{

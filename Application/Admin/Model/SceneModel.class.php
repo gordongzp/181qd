@@ -2,7 +2,7 @@
 namespace Admin\Model;
 use Think\Model\RelationModel;
 
-class ScenceModel extends RelationModel{
+class SceneModel extends RelationModel{
 	
 	protected $_validate = array(
 		array('title','require','请填写标题'),
@@ -22,14 +22,14 @@ class ScenceModel extends RelationModel{
 	protected $_link = array(
 		'attachment' => array(
 			'mapping_type'  => self::HAS_MANY,    
-			'class_name'    => 'scence_attachment',    
-			'foreign_key'   => 'scence_id',   
+			'class_name'    => 'scene_attachment',    
+			'foreign_key'   => 'scene_id',   
 			'mapping_name'  => 'attachment',
 			),
 		'hotspot' => array(
 			'mapping_type'  => self::HAS_MANY,    
 			'class_name'    => 'hotspot',    
-			'foreign_key'   => 'scence_id',   
+			'foreign_key'   => 'scene_id',   
 			'mapping_name'  => 'hotspot',
 			),
 		);

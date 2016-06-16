@@ -58,11 +58,11 @@ class TourAction extends CommonAction {
 		}
 	}
 
-	public function get_scence(){
+	public function get_scene(){
 		$del_ids = explode(',',I('id'));
-		$data = D('Scence')->where(array('tour_id'=>array('in',$del_ids)))->select();
+		$data = D('Scene')->where(array('tour_id'=>array('in',$del_ids)))->select();
 		foreach ($data as $k => $v) {
-			$id[]=$v['scence_id'];
+			$id[]=$v['scene_id'];
 		}
 		$this->ajaxReturn($id);
 	}

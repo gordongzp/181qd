@@ -1,4 +1,4 @@
-<!doctype html>
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -7,36 +7,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<css href="__COMMON__/jquery-ui/jquery-ui.min.css" />
-<css href="__THEME__/css/index.css" />
-<css href="__THEME__/font/font-awesome.min.css" />
-<css href="__COMMON__/css/perfect-scrollbar.min.css" />
+<link rel="stylesheet" type="text/css" href="/Public/Common/jquery-ui/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/Public/Admin/css/index.css" />
+<link rel="stylesheet" type="text/css" href="/Public/Admin/font/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="/Public/Common/css/perfect-scrollbar.min.css" />
 <style>html, body { overflow: visible;}</style>
 <script>
-var ADMIN_TEMPLATES_URL = '__THEME__';
-var LOADING_IMAGE = "__THEME__/images/loading.gif";
-var ADMIN_RESOURCE_URL = '__THEME__';
+var ADMIN_TEMPLATES_URL = '/Public/Admin';
+var LOADING_IMAGE = "/Public/Admin/images/loading.gif";
+var ADMIN_RESOURCE_URL = '/Public/Admin';
 </script>
-<js href="__COMMON__/js/jquery/jquery.js" />
-<js href="__COMMON__/jquery-ui/jquery-ui.min.js" />
-<js href="__COMMON__/jquery-ui/zh-CN.js" />
-<js href="__THEME__/js/admin.js" />
-<script src="__THEME__/dialog/dialog.js" id="dialog_js"></script>
-<js href="__THEME__/js/flexigrid.js" />
-<js href="__COMMON__/js/jquery/jquery.validation.min.js" />
-<js href="__THEME__/js/common.js" />
-<js href="__COMMON__/js/perfect-scrollbar.min.js" />
-<js href="__COMMON__/js/jquery/jquery.mousewheel.js" />
-<js href="__COMMON__/js/jquery/jquery.edit.js" />
+<script type="text/javascript" src="/Public/Common/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="/Public/Common/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/Public/Common/jquery-ui/zh-CN.js"></script>
+<script type="text/javascript" src="/Public/Admin/js/admin.js"></script>
+<script src="/Public/Admin/dialog/dialog.js" id="dialog_js"></script>
+<script type="text/javascript" src="/Public/Admin/js/flexigrid.js"></script>
+<script type="text/javascript" src="/Public/Common/js/jquery/jquery.validation.min.js"></script>
+<script type="text/javascript" src="/Public/Admin/js/common.js"></script>
+<script type="text/javascript" src="/Public/Common/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/Public/Common/js/jquery/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/Public/Common/js/jquery/jquery.edit.js"></script>
 </head>
 <body style="background-color: #FFF; overflow: auto;">
-	<js href="__COMMON__/js/jquery/jquery.picTip.js" />
+	<script type="text/javascript" src="/Public/Common/js/jquery/jquery.picTip.js"></script>
 	<div id="append_parent"></div>
 	<div id="ajaxwaitid"></div>
 	<div class="page">
 		<div class="fixed-bar">
 			<div class="item-title">
-				{$back_htn_html}
+				<?php echo ($back_htn_html); ?>
 				<div class="subject">
 					<h3>场景管理</h3>
 					<h5>场景索引和管理</h5>
@@ -60,7 +60,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 	<script>
 		$(function(){
 			$("#flexigrid").flexigrid({
-				url: '{:U("scence/index")}',
+				url: '<?php echo U("scene/index");?>',
 				colModel : [
 					{display: '操作', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
 					{display: '排序', name : 'sort', width : 60, sortable : true, align: 'center'},
@@ -84,7 +84,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 		
 		function fg_operation(name, bDiv) {
 			if(name == 'add') {
-				window.location.href = '{:U("scence/add")}';
+				window.location.href = '<?php echo U("scene/add");?>';
 			}else if (name == 'del') {
 				if ($('.trSelected', bDiv).length == 0) {
 					showError('请选择要操作的数据项！');
@@ -103,7 +103,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 			};
 			id = ids.join(',');
 			if(confirm('确认这些文章吗？')){
-				$.getJSON('{:U("scence/del")}', {id:id}, function(data){
+				$.getJSON('<?php echo U("scene/del");?>', {id:id}, function(data){
 					if (data.status) {
 						location.reload();
 					} else {
