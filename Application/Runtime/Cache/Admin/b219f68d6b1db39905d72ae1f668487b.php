@@ -63,17 +63,26 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 					<th width="60" class="handle" align="center">操作</th>
 					<th width="60" align="center">排序</th>
 					<th width="300" align="left">热点名称</th>
+					<th width="60" align="left">热点类型</th>
+					<th width="300" align="left">去往场景</th>
+					<th width="300" align="left">去往链接</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
+
+
 				<?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$r): $mod = ($i % 2 );++$i;?><tr data-id="<?php echo ($r["hotspot_id"]); ?>">
 					<td class="sign"><i class="ico-check"></i></td>
 					<td class="handle">
+						<a class="btn green" href="<?php echo U('kp/set_ath_and_atv',array('id'=>$r['hotspot_id']));?>"><i class="fa fa-trash-o"></i>配置</a>
 						<a class="btn red" href="javascript:void(0);" onclick="fg_del(<?php echo ($r["hotspot_id"]); ?>);"><i class="fa fa-trash-o"></i>删除</a>
 					</td>
 					<td class="sort"><span title="可编辑" column_id="<?php echo ($r["hotspot_id"]); ?>" fieldname="sort" nc_type="inline_edit" class="editable "><?php echo ($r["sort"]); ?></span></td>
 					<td class="name"><span title="可编辑" column_id="<?php echo ($r["hotspot_id"]); ?>" fieldname="hotspot_name" nc_type="inline_edit" class="editable "><?php echo ($r["hotspot_name"]); ?></span></td>
+					<td class="sort"><span title="可编辑" column_id="<?php echo ($r["hotspot_id"]); ?>" fieldname="type" nc_type="inline_edit" class="editable "><?php echo ($r["type"]); ?></span></td>
+					<td class="name"><span title="可编辑" column_id="<?php echo ($r["hotspot_id"]); ?>" fieldname="goto_scene_title" nc_type="inline_edit" class="editable "><?php echo ($r["goto_scene_title"]); ?></span></td>
+					<td class="name"><span title="可编辑" column_id="<?php echo ($r["hotspot_id"]); ?>" fieldname="target" nc_type="inline_edit" class="editable "><?php echo ($r["target"]); ?></span></td>
 					<td></td>
 				</tr><?php endforeach; endif; else: echo "" ;endif; ?>
 			</tbody>
@@ -128,6 +137,11 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 				});
 			}
 		}
+
+		function set_hotspot(ids){
+
+		}
+		
 	</script>
 	<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
 </body>

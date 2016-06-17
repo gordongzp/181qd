@@ -72,7 +72,29 @@
 						<p class="notic">1：导航，2：链接，3：放大镜...</p>
 					</dd>
 				</dl>
-				
+
+				<dl class="row">
+					<dt class="tit">
+						<label for="type">去往场景</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="goto_scene_title" name="goto_scene_title" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">如：客厅（之前已定义），当类型为1时有效</p>
+					</dd>
+				</dl>
+
+				<dl class="row">
+					<dt class="tit">
+						<label for="type">去往链接</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="target" name="target" class="input-txt">
+						<span class="err"></span>
+						<p class="notic">如：www.baidu.com，当类型为2时有效</p>
+					</dd>
+				</dl>
+
 				<dl class="row">
 					<dt class="tit">
 						<label for="sort">排序</label>

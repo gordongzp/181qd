@@ -1,0 +1,182 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>中山市华浔品味装饰有限公司 - 中山安乐窝手机触屏版</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://m.alwooo.com/assets/static/jquerymobile/1.4.3/jquery.mobile-1.4.3.min.css">
+<link rel="stylesheet" href="http://m.alwooo.com/assets/css/themes/1.4.0/common-1.4.0.css">
+<script src="http://m.alwooo.com/assets/js/jquery-1.10.2.min.js"></script>
+<script>
+$(document).bind("mobileinit", function(){
+	//默认转场(过度)效果
+	$.mobile.defaultPageTransition = 'none';
+	//是否缓存访问过的页面
+	$.mobile.page.prototype.options.domCache = false;
+});
+</script>
+<script src="http://m.alwooo.com/assets/static/jquerymobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+<script src="http://m.alwooo.com/assets/js/common-1.4.0.js"></script>
+<!-- 百度直统计 -->
+<script>
+var _hmt = _hmt || [];
+$(function(){
+	alert(111);
+})
+</script>
+<!-- 百度直达号 -->
+<script type="text/javascript" name="baidu-tc-cerfication" data-appid="4890895" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
+</head>
+<body>
+<div data-role="page" id="gs-detail">
+	<div data-role="header" data-add-back-btn="true" data-back-btn-text="后退">
+		<h1>公司详情</h1>
+		<a href="<?php echo U('index/index');?>" data-icon="home" class="ui-btn-right">首页</a>
+	</div>
+	<!-- /header -->
+	<div data-role="content">
+		<div class="gs-detail-banner mlr1em">
+			<a href="http://m.alwooo.com/zhaobiao" title="免费申请"><img style="width:100%;" src="http://m.alwooo.com/assets/img/gs_detail_banner.jpg" alt="中山市华浔品味装饰有限公司 Banner" /></a>
+		</div>
+		<div class="gs-detail-list">
+			<div class="mtb1em">
+				<ul data-role="listview">
+					<li data-role="list-divider">公司信息</li>
+					<li>公司：中山市华浔品味装饰有限公司</li>
+					<li>等级：VIP会员</li>
+					<li>认证：已认证</li>
+					<li>量房：免费</li>
+					<li>赔付：不支持</li>
+					<li class="gs-about">
+						<div data-role="collapsible" data-mini="true" data-iconpos="right" data-content-theme="false">
+							<h4>简介：华浔品味装饰成立于1998年，是一家集设</h4>
+							<p>华浔品味装饰成立于1998年，是一家集设计、施工、服务于一体的装饰公司，专业从事家居、写字楼、商铺、酒店等设计，是中国装饰协会会员单位，广东装饰行业的旗舰品牌企业，连续三年被评为“广州十大品牌装饰公司”，是首批取得广州家庭装饰装修企业资格证的单位之一，广州家装委员会主任单位，广州建筑装饰协会会员单位，品味生活空间的引领者。
+ 
+　　公司自成立以来，经历了十余年的风风雨雨，也走过了多年的灿烂与辉煌，在“海纳百川，有容乃大；壁立千仞，无欲则刚”的企业精神的引导下，华浔坚持“以人为本”的用人方针，不断地积淀企业文化内涵，吸纳了一批非常优秀的设计师和监理人才。如今，公司已拥有一批多年从事家居、别墅、写字楼、商铺、酒店等设计的，来自全国各地知名学府如清华大学、中央美术学院、广州美术学院的专家级设计师，他们将不同地区的文化品味、设计理念带到华浔，通过设计装修为这些积淀深厚的文化找到了归依。
+ 
+　　设计源于人，华浔从创立伊始，就非常注重“以人为本”，注重寻求自然环境与人文环境相融的和谐、空间设计与生活风水的整体协调，以体现设计如其人的个性品味空间。同时，华浔还提出了精品组合的设计新概念，即尊重每一位业主，随时跟进业主所需，倾听业主的声音，以创新的服务意识推动产品，将业主对家的概念与对生活空间的设计想象相结合，将业主的需求与设计师自身的设计风格相结合，不断推陈出新，使得家不但是个可以居住的空间，而且是个可以包容亲情、释放温馨、修身养性以及凸显个性的地方。
+ 
+　　在装修工程服务上，华浔坚持“做一个工程树一个样板”的服务理念，承诺“让每一位业主满意”，把每一位业主的家都当成自己的家来装修，公司成立至今多次获得装饰界消费者信得过品牌称号。华浔人相信，做好每一次服务，不但可以提升自己的实力，赢得业主们的信赖和支持，还可以有效地提升华浔的品牌知名度和美誉度，让更多的业主选择华浔，让华浔为更多的业主服务！
+ 
+　　如今，华浔已经建立了完整的设计施工、工程报价以及客户服务系统，2002年公司通过ISO9001国际质量体系认证，标志着华浔将真正致力于品牌化、规模化、规范化和服务化经营。经过十余年发展，华浔的版图不断扩大，足迹遍布全国各地，公司现下辖广州、德政北、海珠、白云、番禺、东莞、常平、石龙、长安、虎门、佛山、顺德、南海、容桂、黄歧、中山、南通、江门、阳江、厦门、汕头、新会、鹤山、三水、开平、珠海、常熟、花都、湛江、清远、惠州、惠阳、肇庆、小榄、龙岩、厦门、威海、福州、福清、泉州、石狮、晋江、无锡、扬州、苏州、常州、宁德、张家港、重庆、内江、达州、宜宾、宜兴、泸州、长沙、海口、南宁、桂林、南昌、河源、韶关、合肥、柳州、贵阳、赣州等超过两百家公司。
+ 
+　　不积跬步，无以成千里，不积小流，无以成江海。经过十余年的积累、十余年的沉淀，在家装市场竞争越来越激烈的今天，华浔将根据未来市场的发展要求，不断提高自己的核心竞争力，用领先的设计和专业的施工，继续品味空间引领者的角色。
+ 
+　　“做品味装饰，创品牌企业”，华浔人正以饱满的热情和自信一路前行！</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mtb1em">
+				<ul data-role="listview">
+					<li data-role="list-divider">中山市华浔品味装饰工程有限公司</li>
+					<li>地址：东区公司-兴中大道体育馆道首层馆内
+北区公司-石岐区康华路7号泓景苑17、18卡</li>
+					<li>电话：0760-88308716</li>
+					<li data-role="list-divider">华浔品味装饰</li>
+					<li>地址：中山市东区兴中道体育馆首层内</li>
+					<li>电话：88308716</li>
+				</ul>
+			</div>
+		</div>
+		<!--
+		<div class="gs-detail-case">
+			<ul class="img-bg-list" data-role="listview" data-theme="c" data-dividertheme="c">
+				<li data-role="list-divider">作品案例</li>
+				<li> <a href="case-detail.html"> <div class="img" style="background-image:url(test/album-af.jpg);"></div>
+					<h2>中山市名匠装饰设计工程有限公司</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li> <a href="case-detail.html"> <div class="img" style="background-image:url(test/album-ag.jpg);"></div>
+					<h2>三艺品味沙溪镇政府案例</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li> <a href="#"> <div class="img" style="background-image:url(test/album-bb.jpg);"></div>
+					<h2>远洋城尊域</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li> <a href="#"> <div class="img" style="background-image:url(test/album-bk.jpg);"></div>
+					<h2>中山奥园梁小姐</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li data-theme="e" data-icon="false"> <a class="tac f14" href="#">查看更多案例</a> </li>
+			</ul>
+		</div>
+		<div class="gs-detail-sjs">
+			<ul class="img-bg-list" data-role="listview" data-theme="c" data-dividertheme="c">
+				<li data-role="list-divider">设计师</li>
+				<li> <a href="case-detail.html"> <div class="img" style="background-image:url(test/album-af.jpg);"></div>
+					<h2>中山市名匠装饰设计工程有限公司</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li> <a href="case-detail.html"> <div class="img" style="background-image:url(test/album-ag.jpg);"></div>
+					<h2>三艺品味沙溪镇政府案例</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li> <a href="#"> <div class="img" style="background-image:url(test/album-bb.jpg);"></div>
+					<h2>远洋城尊域</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li> <a href="#"> <div class="img" style="background-image:url(test/album-bk.jpg);"></div>
+					<h2>中山奥园梁小姐</h2>
+					<p>地址：中山市石岐区兴中道东方商务大厦首层</p>
+					<p>电话：0760-88709670 88703970</p>
+					</a> </li>
+				<li data-theme="c" data-icon="false"> <a class="tac f14" href="#">查看更多设计师</a> </li>
+			</ul>
+		</div>
+		-->
+		<div class="gs-detail-dianping mtb1em">
+			<ul data-role="listview">
+				<li data-role="list-divider">业主点评</li>
+				<li>
+					<h6 class="mb5">从进场、水电安装的操作看，华浔很专业，也很规范，好样的！</h6>
+					<p><span class="time fr">2013-11-25 11:01:52</span><span class="project">家庭装修</span></p>
+				</li>
+				<li>
+					<h6 class="mb5">家里是老房装修，快完工了，前期的装修一切都挺好，售后还没有开始，所以还不好说。整体是大包给他们做的，瓷砖都贴的不错，就是水电路改的有点多，看着也挺标准的，也就算了。</h6>
+					<p><span class="time fr">2013-10-14 11:05:34</span><span class="project">老三房一厅</span></p>
+				</li>
+				<li>
+					<h6 class="mb5">第一次装办公室，我看重的就是华浔的口碑，服务非常周到，门、隔断都是装修公司提供的，省去了我不少的麻烦，装修效果简单而不失大气，材料选择上也比较讲究，并且价格不是非常贵。</h6>
+					<p><span class="time fr">2013-08-10 16:29:40</span><span class="project">办公室装修</span></p>
+				</li>
+				<!--<li data-theme="e" data-icon="false"> <a class="tac f14" href="#">查看更多点评</a> </li>-->
+			</ul>
+		</div>
+		<div class="content-footer">
+			<p style="text-align:center; margin-bottom:5px;">安乐窝 &#8226; 中国第一权威装修行业平台</p>
+			<p class="tac" style="margin:0.5em 0;"><a style="color:#333;" href="/gs/detail/830">触屏版</a><span style="color:#999; margin:0 0.5em;">|</span><a style="color:#999;" href="http://www.alwooo.com/company/830?fromwap=1">电脑版</a></p>
+		</div>
+	</div>
+	<!-- /content -->
+	<div data-role="footer" data-position="fixed">
+		<a class="ui-btn-left ui-btn ui-btn-a ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-bars" href="#popupMenu-gs-detail" data-rel="popup" data-transition="none">菜单</a>
+		<span class="ui-title"></span>
+		<a class="ui-btn-right ui-btn ui-btn-a ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-phone" href="tel:0760-88888158">0760-88888158</a>
+	</div>
+	<!-- /footer --> 
+	<!--菜单-->
+	<div data-role="popup" data-shadow="false" id="popupMenu-gs-detail"  style="overflow:hidden;">
+		<ul data-role="listview" data-inset="true" style="min-width:100px;">
+			<!--<li data-role="list-divider">菜单</li>-->
+			<li><a href="http://m.alwooo.com/">网站首页</a></li>
+			<li><a href="http://m.alwooo.com/zhaobiao">免费设计</a></li>
+			<!--<li><a href="http://m.alwooo.com/baojia">免费报价</a></li>-->
+			<li><a href="http://m.alwooo.com/gs">装修公司</a></li>
+			<li><a href="http://m.alwooo.com/cases">经典案例</a></li>
+			<li><a href="http://m.alwooo.com/zhaobiao/baozhang">装修保障</a></li>
+			<li><a href="http://m.alwooo.com/article">装修学堂</a></li>
+		</ul>
+	</div>
+</div>
+<!-- /page -->
+</body>
+</html>

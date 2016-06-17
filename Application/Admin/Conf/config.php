@@ -17,4 +17,6 @@ return array(
 	'ADV_TYPE' => array(
 		1 => '图片'
 	),
+
+	
 );

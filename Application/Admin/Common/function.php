@@ -290,3 +290,7 @@ function delDirAndFile( $dirName )
 	}
 }
 
+//md10加密
+function md10($str){
+	return md5($str);
+}

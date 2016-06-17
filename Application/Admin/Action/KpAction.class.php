@@ -6,18 +6,22 @@ class KpAction extends CommonAction {
 	public function __construct(){
 		parent::__construct();
 	}
+
 	public function show(){
-		$id=I('id');
-		echo '<script>window.location.href=\'./Public/viewer/examples/'.$id.'/index.html\';</script>';
+		$tour_work_path_name=md10(I('id'));
+		echo '<script>window.location.href=\'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/index.html\';</script>';
 	}
+
 	public function file_put_and_show(){
 		$this->file_put();
 		$this->show();
 	}
+
 	public function file_put(){
 		$id=I('id');
 		$this->put($id);
 	}
+
 	public function file_put_all(){
 		$data=D('Admin')->relation('tour')->find(session('admin.admin_id'));
 		foreach ($data['tour'] as $k => $tour) {
@@ -25,7 +29,11 @@ class KpAction extends CommonAction {
 		}
 		$this->success('生成完毕',U('tour/index'));
 	}
+
 	public function put($id){
+		$KP_PANOS_PATH_NAME=C('KP_PANOS_PATH_NAME');
+		$KP_MOBILE_NAME=C('KP_MOBILE_NAME');
+		$tour_work_path_name=md10($id);
 		$tour=D('Tour')->relation('scene')->where('tour_id='.$id)->find();
 		if ($tour['scene']) {
 			foreach ($tour['scene'] as $k => $v) {
@@ -33,54 +41,55 @@ class KpAction extends CommonAction {
 			}
 			$scenes=D('scene')->relation(true)->where(array('scene_id'=>array('in',$scene_ids)))->select();
 		}
-		
 		dump($tour);
 		dump($scenes);
-
 		//检查是否有工作目录,有则删除,没有则创建
-		if (is_dir('./Public/viewer/examples/'.$id)){
-			delDirAndFile('./Public/viewer/examples/'.$id);
+		if (is_dir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name)){
+			delDirAndFile('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
 		}
-		recurse_copy('./Public/viewer/examples/template','./Public/viewer/examples/'.$id);
+		recurse_copy('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.C('KP_TEMPLATE_NAME'),'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
 			//修改index入口文件
 		$str=<<<str
 <!DOCTYPE html>
 <html>
 <head>
 <!-- redirect to the root krpano.html to avoid local browser restrictions -->
-<meta http-equiv="refresh" content="0; url=../../krpano.html?xml=examples/{$id}/tour.xml" />
+<meta http-equiv="refresh" content="0; url=../../krpano.html?xml=examples/{$tour_work_path_name}/tour.xml" />
 <style>body{background-color:#000000;}</style>
 </head>
 </html>
 str;
-		file_put_contents('./Public/viewer/examples/'.$id.'/index.html',$str);
+		file_put_contents('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/index.html',$str);
 
 		//场景文件组织
 		foreach ($scenes as $k => $scene) {
-			//检查是否有场景目录，没有则创建
-			mkdir('./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id']);
+			$scene_path_name=md10($scene['scene_id']);
+			//创建场景目录
+			mkdir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name);
 			//构建场景thumb
-			copy($scene['pic'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/thumb.jpg');
+			copy($scene['pic'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/thumb.jpg');
+			//复制空的index.html
+			copy('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.C('KP_TEMPLATE_NAME').'/index_empty.html','./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/index.html');
 			//构建场景cube
 			foreach ($scene['attachment'] as $key => $attachment) {
 				switch ($key) {
 					case 0:
-					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_r.jpg');
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_r.jpg');
 					break;
 					case 1:
-					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_l.jpg');
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_l.jpg');
 					break;
 					case 2:
-					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_b.jpg');
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_b.jpg');
 					break;
 					case 3:
-					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_f.jpg');
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_f.jpg');
 					break;
 					case 4:
-					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_d.jpg');
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_d.jpg');
 					break;
 					case 5:
-					copy($attachment['path'],'./Public/viewer/examples/'.$id.'/panos/'.$scene['scene_id'].'/mobile_u.jpg');
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_u.jpg');
 					break;
 					default:
 					break;
@@ -262,15 +271,15 @@ $str=<<<str
 str;
 
 	foreach ($scenes as $k => $scene) {
-
+		$scene_path_name=md10($scene['scene_id']);
 $str.=<<<str
 
-	<scene name="s{$scene['scene_id']}" title="s{$scene['scene_id']}" onstart="" thumburl="panos/{$scene['scene_id']}/thumb.jpg">
+	<scene name="{$scene_path_name}" title="{$scene_path_name}" onstart="" thumburl="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/thumb.jpg">
 
 		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="95" fovmin="45" fovmax="120" />
 
 		<image>
-			<cube url="panos/{$scene['scene_id']}/mobile_%s.jpg" />
+			<cube url="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/{$KP_MOBILE_NAME}_%s.jpg" />
 		</image>
 
 	</scene>
@@ -284,8 +293,173 @@ str;
 </krpano>
 
 str;
-		file_put_contents('./Public/viewer/examples/'.$id.'/tour.xml',$str);
+		file_put_contents('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/tour.xml',$str);
 
+	}
+
+	public function set_ath_and_atv(){
+
+		$hotspot_id=I('id');//hotspot_id
+		$hotspot_data=D('Hotspot')->find($hotspot_id);
+		$scene_id=$hotspot_data['scene_id'];//scene_id
+		$scene_data=D('Scene')->relation('attachment')->find($scene_id);
+		$tour_id=$scene_data['tour_id'];//tour_id
+
+		$ath=$hotspot_data['ath'];
+		$atv=$hotspot_data['atv'];
+
+		$KP_PANOS_PATH_NAME=C('KP_PANOS_PATH_NAME');
+		$KP_MOBILE_NAME=C('KP_MOBILE_NAME');
+		$tour_work_path_name=md10($tour_id).'temp';
+
+		//检查是否有工作目录,有则删除,没有则创建
+		if (is_dir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name)){
+			delDirAndFile('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
+		}
+		recurse_copy('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.C('KP_TEMPLATE_NAME'),'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
+			//修改index入口文件
+		$str=<<<str
+<!DOCTYPE html>
+<html>
+<head>
+<!-- redirect to the root krpano.html to avoid local browser restrictions -->
+<meta http-equiv="refresh" content="0; url=../../krpano.html?xml=examples/{$tour_work_path_name}/tour.xml" />
+<style>body{background-color:#000000;}</style>
+</head>
+</html>
+str;
+		file_put_contents('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/index.html',$str);
+
+			//场景文件组织
+			$scene_path_name=md10($scene_id);
+			//创建场景目录
+			mkdir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name);
+			//构建场景thumb
+			copy($scene['pic'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/thumb.jpg');
+			//复制空的index.html
+			copy('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.C('KP_TEMPLATE_NAME').'/index_empty.html','./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/index.html');
+			//构建场景cube
+			foreach ($scene_data['attachment'] as $key => $attachment) {
+				switch ($key) {
+					case 0:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_r.jpg');
+					break;
+					case 1:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_l.jpg');
+					break;
+					case 2:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_b.jpg');
+					break;
+					case 3:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_f.jpg');
+					break;
+					case 4:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_d.jpg');
+					break;
+					case 5:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_u.jpg');
+					break;
+					default:
+					break;
+				}	
+			}
+
+
+$str=<<<str
+<!--
+	krpano Virtual Tour Demo - Kuchlerhaus
+		http://krpano.com/tours/kuchlerhaus/
+
+	The tour images were build fully automatic with the MAKE VTOUR Droplet,
+	but the skin itself and the hotspots are fully custom xml code.
+
+	Note - this is an reduced example (smaller images, stronger compression, fewer panos) to keep the download package small!
+-->
+<krpano>
+
+	<include url="contextmenu.xml" />
+
+	<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="60" fovmax="150" />
+
+	<!-- hotspot styles -->
+	<style name="arrowspot1" url="skin/pfeil1.png" distorted="true" />
+	<style name="arrowspot2" url="skin/pfeil2.png" distorted="true" />
+	<style name="arrowspot3" url="skin/pfeil3.png" distorted="true" />
+	<style name="arrowspot4" url="skin/pfeil4.png" distorted="true" />
+	<style name="arrowspot5" url="skin/pfeil5.png" distorted="true" />
+	<style name="zoomspot"   url="skin/zoomicon.png" distorted="true" />
+
+	<!-- textfield with information about the currently dragged hotspot -->
+	<plugin name="hotspot_pos_info"
+	        url="%SWFPATH%/plugins/textfield.swf"
+	        html="drag the hotspots..."
+	        css="font-family:Courier;color:white;background:black;"
+	        padding="0"
+	        align="lefttop" x="10" y="10"
+	        width="200"
+	        enabled="false"
+	        />
+
+	<!-- logo -->
+	<plugin name="logo"
+	        url="skin/kuchlerhaus-logo.png"
+	        keep="true"
+	        enabled="false"
+	        align="rightbottom"
+	        x="10" y="5"
+	        scale.mobile="0.5"
+	        />
+
+	<!-- 跳转 -->
+	<action name="get_url">
+		def(uuu, string, '');
+		txtadd(uuu,'http://www.baidu.com?ath=',get(hotspot[0].ath),'&amp;atv=',get(hotspot[0].atv));
+		openurl(get(uuu));
+	</action>
+	
+	<!-- the action for dragging the hotspot - call it once in the ondown event -->
+	<action name="draghotspot">
+		spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery, 'l');
+		sub(drag_adjustx, mouse.stagex, hotspotcenterx);
+		sub(drag_adjusty, mouse.stagey, hotspotcentery);
+		asyncloop(pressed,
+			sub(dx, mouse.stagex, drag_adjustx);
+			sub(dy, mouse.stagey, drag_adjusty);
+			screentosphere(dx, dy, ath, atv);
+			print_hotspot_pos();
+		  );
+	</action>
+
+	<action name="print_hotspot_pos"><![CDATA[
+		copy(print_ath, ath);
+		copy(print_atv, atv);
+		roundval(print_ath, 3);
+		roundval(print_atv, 3);
+		calc(plugin[hotspot_pos_info].html, '&lt;hotspot name="' + name + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ath="' + print_ath + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atv="' + print_atv + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&gt;');
+	]]></action>
+
+
+
+		<image>
+			<cube url="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/{$KP_MOBILE_NAME}_%s.jpg" />
+		</image>
+
+		<hotspot name="选择热点位置"   style="arrowspot1" ath="{$ath}"     atv="{$ath}"  scale="0.40" ondown="draghotspot();"/>
+
+		<hotspot name="确定" 
+			 url="skin/kuchlerhaus-logo.png"
+			 ath="0"
+	         atv="90"
+	         distorted="true"
+	         scale="1.0"
+	         rotate="0.0"
+	         onclick="get_url();"
+	    />
+</krpano>
+
+str;
+		file_put_contents('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/tour.xml',$str);
+		echo '<script>window.location.href=\'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/index.html\';</script>';
 	}
 	
 }

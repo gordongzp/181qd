@@ -63,18 +63,27 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 					<th width="60" class="handle" align="center">操作</th>
 					<th width="60" align="center">排序</th>
 					<th width="300" align="left">热点名称</th>
+					<th width="60" align="left">热点类型</th>
+					<th width="300" align="left">去往场景</th>
+					<th width="300" align="left">去往链接</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
+
+
 				<volist name="list" id="r">
 				<tr data-id="{$r.hotspot_id}">
 					<td class="sign"><i class="ico-check"></i></td>
 					<td class="handle">
+						<a class="btn green" href="{:U('kp/set_ath_and_atv',array('id'=>$r['hotspot_id']))}"><i class="fa fa-trash-o"></i>配置</a>
 						<a class="btn red" href="javascript:void(0);" onclick="fg_del({$r.hotspot_id});"><i class="fa fa-trash-o"></i>删除</a>
 					</td>
 					<td class="sort"><span title="可编辑" column_id="{$r.hotspot_id}" fieldname="sort" nc_type="inline_edit" class="editable ">{$r.sort}</span></td>
 					<td class="name"><span title="可编辑" column_id="{$r.hotspot_id}" fieldname="hotspot_name" nc_type="inline_edit" class="editable ">{$r.hotspot_name}</span></td>
+					<td class="sort"><span title="可编辑" column_id="{$r.hotspot_id}" fieldname="type" nc_type="inline_edit" class="editable ">{$r.type}</span></td>
+					<td class="name"><span title="可编辑" column_id="{$r.hotspot_id}" fieldname="goto_scene_title" nc_type="inline_edit" class="editable ">{$r.goto_scene_title}</span></td>
+					<td class="name"><span title="可编辑" column_id="{$r.hotspot_id}" fieldname="target" nc_type="inline_edit" class="editable ">{$r.target}</span></td>
 					<td></td>
 				</tr>
 				</volist>
@@ -130,6 +139,11 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 				});
 			}
 		}
+
+		function set_hotspot(ids){
+
+		}
+		
 	</script>
 	<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
 </body>
