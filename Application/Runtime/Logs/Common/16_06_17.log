@@ -562,3 +562,123 @@ INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
 INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
 ERR: 无法加载模块:Public
 
+[ 2016-06-17T21:39:15+08:00 ] ::1 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000197s ]
+ERR: 无法加载模块:Favicon
+
+[ 2016-06-17T21:39:22+08:00 ] ::1 /Public/Common/jquery-ui/images/ui-bg_flat_75_ffffff_40x100.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000176s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:41:28+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000207s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:41:32+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000223s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:44:05+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000211s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:44:11+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000213s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:44:21+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000217s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:44:23+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000211s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:44:37+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000194s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:44:44+08:00 ] ::1 /Public/Common/css/perfect-scrollbar.min.csss
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000210s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T21:45:37+08:00 ] ::1 /Public/Common/jquery-ui/images/ui-bg_flat_75_ffffff_40x100.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000196s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T22:01:57+08:00 ] ::1 /Public/viewer/sxamples/examples
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000199s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T22:02:48+08:00 ] ::1 /view
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000214s ]
+ERR: 无法加载模块:View
+
+[ 2016-06-17T23:17:55+08:00 ] ::1 /Public/viewer/123?id=1&ath=0&atv=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000222s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T23:18:23+08:00 ] ::1 /Public/viewer/123?id=1&ath=0&atv=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000204s ]
+ERR: 无法加载模块:Public
+
+[ 2016-06-17T23:26:44+08:00 ] ::1 /index.php&m=Admin&c=kp&a=set_ath_and_atv?id=1&ath=0&atv=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000220s ]
+ERR: 无法加载模块:Index
+
+[ 2016-06-17T23:27:38+08:00 ] ::1 /index.php&m=Admin&c=kp&a=set_ath_and_atv&id=1&ath=0&atv=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000207s ]
+ERR: 无法加载模块:Index
+
+[ 2016-06-17T23:44:12+08:00 ] ::1 /index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000551s ]
+ERR: 无法加载模块:Index
+
+[ 2016-06-17T23:44:27+08:00 ] ::1 /index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000186s ]
+ERR: 无法加载模块:Index
+
+[ 2016-06-17T23:44:30+08:00 ] ::1 /Hotspot/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000019s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000449s ]
+ERR: 无法加载模块:Hotspot
+

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-06-15 17:50:10                          */
+/* Created on:     2016/6/18 1:47:12                            */
 /*==============================================================*/
 
 
@@ -20,9 +20,9 @@ drop table if exists cms_news_attachment;
 
 drop table if exists cms_news_category;
 
-drop table if exists cms_scence;
+drop table if exists cms_scene;
 
-drop table if exists cms_scence_attachment;
+drop table if exists cms_scene_attachment;
 
 drop table if exists cms_tour;
 
@@ -73,9 +73,17 @@ create table cms_auth
 create table cms_hotspot
 (
    hotspot_id           int(11) not null auto_increment,
-   scence_id            int(10),
+   scene_id             int(10),
    hotspot_name         varchar(200) not null,
    sort                 tinyint(6) unsigned not null,
+   type                 tinyint(1) unsigned not null default 1,
+   ath                  float(11) not null default 0,
+   atv                  float(11) not null default 0,
+   goto_scene_title     varchar(200),
+   goto_scene_hlookat   float(11) not null default 0,
+   goto_scene_vlookat   float(11) not null default 0,
+   goto_scene_fov       float(11) not null default 100,
+   target               text,
    primary key (hotspot_id)
 );
 
@@ -141,25 +149,29 @@ create table cms_news_category
 );
 
 /*==============================================================*/
-/* Table: cms_scence                                            */
+/* Table: cms_scene                                             */
 /*==============================================================*/
-create table cms_scence
+create table cms_scene
 (
-   scence_id            int(10) not null auto_increment,
+   scene_id             int(10) not null auto_increment,
    tour_id              int(10),
    title                varchar(200) not null,
    sort                 tinyint(6) unsigned not null,
    update_time          varchar(13),
-   primary key (scence_id)
+   pic                  text not null,
+   hlookat              float(11) not null default 0,
+   vlookat              float(11) not null default 0,
+   fov                  float(11) not null default 100,
+   primary key (scene_id)
 );
 
 /*==============================================================*/
-/* Table: cms_scence_attachment                                 */
+/* Table: cms_scene_attachment                                  */
 /*==============================================================*/
-create table cms_scence_attachment
+create table cms_scene_attachment
 (
    atta_id              int(11) not null auto_increment,
-   scence_id            int(10),
+   scene_id             int(10),
    path                 text not null,
    primary key (atta_id)
 );
@@ -202,8 +214,8 @@ alter table cms_auth add constraint FK_Reference_2 foreign key (role_id)
 alter table cms_auth add constraint FK_Reference_4 foreign key (menu_id)
       references cms_menu (menu_id) on delete restrict on update restrict;
 
-alter table cms_hotspot add constraint FK_Reference_11 foreign key (scence_id)
-      references cms_scence (scence_id) on delete restrict on update restrict;
+alter table cms_hotspot add constraint FK_Reference_9 foreign key (scene_id)
+      references cms_scene (scene_id) on delete restrict on update restrict;
 
 alter table cms_news add constraint FK_Reference_13 foreign key (cat_id)
       references cms_news_category (cat_id) on delete restrict on update restrict;
@@ -211,11 +223,11 @@ alter table cms_news add constraint FK_Reference_13 foreign key (cat_id)
 alter table cms_news_attachment add constraint FK_Reference_12 foreign key (news_id)
       references cms_news (news_id) on delete restrict on update restrict;
 
-alter table cms_scence add constraint FK_Reference_10 foreign key (tour_id)
+alter table cms_scene add constraint FK_Reference_10 foreign key (tour_id)
       references cms_tour (tour_id) on delete restrict on update restrict;
 
-alter table cms_scence_attachment add constraint FK_Reference_15 foreign key (scence_id)
-      references cms_scence (scence_id) on delete restrict on update restrict;
+alter table cms_scene_attachment add constraint FK_Reference_11 foreign key (scene_id)
+      references cms_scene (scene_id) on delete restrict on update restrict;
 
 alter table cms_tour add constraint FK_Reference_14 foreign key (cat_id)
       references cms_tour_category (cat_id) on delete restrict on update restrict;

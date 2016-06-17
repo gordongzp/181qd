@@ -29,7 +29,6 @@ class HotspotAction extends CommonAction {
 	}
 	
 	public function save_data(){
-		$model = D('Hotspot');
 		if(false === $data = $model->create()){
 			$e = $model->getError();
 			$this->error($e);
@@ -63,6 +62,32 @@ class HotspotAction extends CommonAction {
 			$this->error('保存失败');
 		}else{
 			$this->success('保存成功');
+		}
+	}
+
+	public function save_configs(){
+		$hotspot_id=I('id');//hotspot_id
+		$hotspot_data=D('Hotspot')->find($hotspot_id);
+		$scene_id=$hotspot_data['scene_id'];//scene_id
+		$scene_data=D('Scene')->relation('attachment')->find($scene_id);
+		$tour_id=$scene_data['tour_id'];//tour_id
+
+		$model = D('Hotspot');
+		$data[$model->getPk()] = I('id');
+		foreach (I('get.') as $k => $v) {
+			if ('id'!=$k) {
+				$data[$k]=$v;
+			}
+		}		
+		if(false === $data = $model->create($data)){
+			$e = $model->getError();
+			$this->error($e);
+		}
+		$result = $model->save();
+		if($result === false){
+			$this->error('保存失败');
+		}else{
+			$this->success('保存成功',U('Kp/file_put_and_show',array('id' =>$tour_id ,)));
 		}
 	}
 	
