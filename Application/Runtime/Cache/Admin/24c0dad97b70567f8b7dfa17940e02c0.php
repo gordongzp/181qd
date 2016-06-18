@@ -112,7 +112,7 @@
 				var ids = new Array(ids.toString());
 			};
 			id = ids.join(',');
-			if(confirm('确认这些文章吗？')){
+			if(confirm('确认这些全景吗？')){
 				$.getJSON('<?php echo U("tour/get_scene");?>', {id:id}, function(data){
 					if (data) {
 						$.getJSON('<?php echo U("scene/del");?>', {id:data.join(',')}, function(data2){

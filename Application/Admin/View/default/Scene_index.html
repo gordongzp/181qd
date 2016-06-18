@@ -107,7 +107,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 				var ids = new Array(ids.toString());
 			};
 			id = ids.join(',');
-			if(confirm('确认这些文章吗？')){
+			if(confirm('确认这些场景吗？')){
 				$.getJSON('{:U("scene/del")}', {id:id}, function(data){
 					if (data.status) {
 						location.reload();

@@ -97,18 +97,10 @@ str;
 
 
 $str=<<<str
-<!--
-	krpano Virtual Tour Demo - Kuchlerhaus
-		http://krpano.com/tours/kuchlerhaus/
-
-	The tour images were build fully automatic with the MAKE VTOUR Droplet,
-	but the skin itself and the hotspots are fully custom xml code.
-
-	Note - this is an reduced example (smaller images, stronger compression, fewer panos) to keep the download package small!
--->
 <krpano>
-
+	<include url="navbar/navbar.xml" />
 	<include url="contextmenu.xml" />
+
 
 	<action name="startup" autorun="onstart">
 		if(startscene === null, set(startscene,get(scene[0].name)) );
@@ -123,6 +115,8 @@ $str=<<<str
 	<style name="arrowspot4" url="skin/pfeil4.png" distorted="true" />
 	<style name="arrowspot5" url="skin/pfeil5.png" distorted="true" />
 	<style name="zoomspot"   url="skin/zoomicon.png" distorted="true" />
+
+
 
 	<!-- thumbs -->
 	<layer name="thumbs" keep="true" type="container" align="leftbottom" width="100" height="100%" x="-102" y="0" state="closed">
@@ -284,8 +278,12 @@ $str.=<<<str
 			<cube url="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/{$KP_MOBILE_NAME}_%s.jpg" />
 		</image>
 
-
-
+		<!--
+		 the 'tooltip' style - show the tooltip textfield and update its position as long as hovering 
+		-->
+		<style name="tooltip" onover="copy(layer[tooltip].html, tooltip); set(layer[tooltip].visible, true); tween(layer[tooltip].alpha, 1.0, 0.5); asyncloop(hovering, copy(layer[tooltip].x,mouse.stagex); copy(layer[tooltip].y,mouse.stagey); );" onout="tween(layer[tooltip].alpha, 0.0, 0.25, default, set(layer[tooltip].visible,false), copy(layer[tooltip].x,mouse.stagex); copy(layer[tooltip].y,mouse.stagey); );"/>
+		<!--  the 'tooltip' textfield  -->
+		<layer name="tooltip" keep="true" url="%SWFPATH%/plugins/textfield.swf" parent="STAGE" visible="false" alpha="0" enabled="false" align="lefttop" edge="bottom" oy="-2" background="false" backgroundcolor="0xFFFFFF" backgroundalpha="1.0" border="false" bordercolor="0x000000" borderalpha="1.0" borderwidth="1.0" roundedge="0" shadow="0.0" shadowrange="4.0" shadowangle="45" shadowcolor="0x000000" shadowalpha="1.0" textshadow="1" textshadowrange="6.0" textshadowangle="90" textshadowcolor="0x000000" textshadowalpha="1.0" css="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:14px;" html=""/>		
 
 str;
 
@@ -313,7 +311,7 @@ str;
 		switch ($type) {
 			case 1:
 $str.=<<<str
-<hotspot name="{$md10_hotspot_id}"  style="arrowspot1" ath="{$ath}" atv="{$atv}" scale="0.45" onclick="transition({$md10_hotspot_id}, {$des_ath}, {$des_atv}, 0, {$goto_scene_name}, {$goto_scene_hlookat}, {$goto_scene_vlookat}, {$goto_scene_fov});" />
+<hotspot name="{$md10_hotspot_id}" tooltip="{$hotspot_name}" style="arrowspot1|tooltip" ath="{$ath}" atv="{$atv}" scale="0.45" onclick="transition({$md10_hotspot_id}, {$des_ath}, {$des_atv}, 0, {$goto_scene_name}, {$goto_scene_hlookat}, {$goto_scene_vlookat}, {$goto_scene_fov});" />
 str;
 			break;
 			case 2:
@@ -428,15 +426,6 @@ str;
 
 
 $str=<<<str
-<!--
-	krpano Virtual Tour Demo - Kuchlerhaus
-		http://krpano.com/tours/kuchlerhaus/
-
-	The tour images were build fully automatic with the MAKE VTOUR Droplet,
-	but the skin itself and the hotspots are fully custom xml code.
-
-	Note - this is an reduced example (smaller images, stronger compression, fewer panos) to keep the download package small!
--->
 <krpano>
 
 	<include url="contextmenu.xml" />
@@ -606,15 +595,7 @@ str;
 
 
 $str=<<<str
-<!--
-	krpano Virtual Tour Demo - Kuchlerhaus
-		http://krpano.com/tours/kuchlerhaus/
 
-	The tour images were build fully automatic with the MAKE VTOUR Droplet,
-	but the skin itself and the hotspots are fully custom xml code.
-
-	Note - this is an reduced example (smaller images, stronger compression, fewer panos) to keep the download package small!
--->
 <krpano>
 
 	<include url="contextmenu.xml" />
@@ -767,15 +748,7 @@ str;
 
 
 $str=<<<str
-<!--
-	krpano Virtual Tour Demo - Kuchlerhaus
-		http://krpano.com/tours/kuchlerhaus/
 
-	The tour images were build fully automatic with the MAKE VTOUR Droplet,
-	but the skin itself and the hotspots are fully custom xml code.
-
-	Note - this is an reduced example (smaller images, stronger compression, fewer panos) to keep the download package small!
--->
 <krpano>
 
 	<include url="contextmenu.xml" />
