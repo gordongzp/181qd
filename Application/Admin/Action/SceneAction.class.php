@@ -6,9 +6,9 @@ class SceneAction extends CommonAction {
 	public function __construct(){
 		parent::__construct();
 		if (I('tid')) {
-			S('tid',I('tid'));
+			session('tid',I('tid'));
 		}
-		$this->tid=S('tid');
+		$this->tid=session('tid');
 		$this->assign('tid',$this->tid);
 	}
 	public function index(){
@@ -29,6 +29,8 @@ class SceneAction extends CommonAction {
 			header('Content-Type:text/xml; charset=utf-8');
 			exit(scene_xml_encode(array('page'=>$page,'total'=>$total,'data'=>$data)));
 		}else{
+			$tour_data=D('Tour')->find($this->tid);
+			$this->assign('tour_title',$tour_data['title']);
 			$this->set_back();
 			$this->display();
 		}
@@ -68,7 +70,32 @@ class SceneAction extends CommonAction {
 			$this->success('删除成功',U('scene/index'));
 		}
 	}
-	
+
+	public function save_configs(){
+		$model = D('Scene');
+		$scene_id=I('id');//scene_id
+
+		$scene_data=D('Scene')->find($scene_id);
+		$tour_id=$scene_data['tour_id'];//tour_id
+
+		$data[$model->getPk()] = I('id');
+		foreach (I('get.') as $k => $v) {
+			if ($model->getPk()!=$k) {
+				$data[$k]=$v;
+			}
+		}		
+		if(false === $data = $model->create($data)){
+			$e = $model->getError();
+			$this->error($e);
+		}
+		$result = $model->save();
+		if($result === false){
+			$this->error('保存失败');
+		}else{
+			$this->success('保存成功',U('Kp/file_put_and_show',array('id' =>$tour_id ,)));
+		}
+	}
+
 	private function save_news(){
 		$model = D('Scene');
 		$attachment = I('attachment');

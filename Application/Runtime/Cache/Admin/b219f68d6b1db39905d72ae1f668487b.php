@@ -37,9 +37,9 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 	<div class="page">
 		<div class="fixed-bar">
 			<div class="item-title">
-				<?php echo ($back_htn_html); ?>
+				<a class="back" href="<?php echo U('scene/index');?>" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
 				<div class="subject">
-					<h3>热点管理</h3>
+					<h3>热点管理(<?php echo ($tour_title); ?>/<?php echo ($scene_title); ?>)</h3>
 					<h5>场景热点编辑管理</h5>
 				</div>
 			</div>
@@ -80,7 +80,7 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 					<td class="handle">
 						<a class="btn green" href="<?php echo U('kp/set_ath_and_atv',array('id'=>$r['hotspot_id']));?>"><i class="fa fa-gear"></i>配置热点</a>
 						<?php  if ($r['type']==1) { ?>
-							<a class="btn green" href="<?php echo U('kp/set_scene',array('id'=>$r['hotspot_id']));?>"><i class="fa fa-video-camera"></i>配置场景</a>
+							<a class="btn green" href="<?php echo U('kp/set_goto_scene',array('id'=>$r['hotspot_id']));?>"><i class="fa fa-video-camera"></i>配置镜头</a>
 							<?php  } ?>
 						<a class="btn red" href="javascript:void(0);" onclick="fg_del(<?php echo ($r["hotspot_id"]); ?>);"><i class="fa fa-trash-o"></i>删除</a>
 					</td>

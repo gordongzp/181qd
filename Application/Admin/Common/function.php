@@ -229,11 +229,14 @@ function scene_xml_encode($data, $root='rows', $item='item', $attr='', $id='id',
 	$xml   .= "<total>".$data['total']."</total>";
 	foreach($data['data'] as $v){
 		$xml.= "<row id='".$v['scene_id']."'>"; 
-		$xml.= "<cell><![CDATA[<a class='btn blue' href='".U('scene/edit',array('id'=>$v['scene_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['scene_id'].");'><i class='fa fa-trash-o'></i>删除</a>]]></cell>";
+		$xml.= "<cell><![CDATA[<a class='btn blue' href='".U('scene/edit',array('id'=>$v['scene_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn green' href='".U('kp/set_scene',array('id'=>$v['scene_id']))."'><i class='fa fa-video-camera'></i>镜头配置</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['scene_id'].");'><i class='fa fa-trash-o'></i>删除</a>]]></cell>";
 		$xml.= "<cell>".$v['sort']."</cell>";
 		$xml.= "<cell>".$v['title']."</cell>";
 		$xml.= "<cell><![CDATA[<a href='javascript:void(0);' class='pic-thumb-tip' onMouseOut='toolTip()' onMouseOver='toolTip(\"<img src=".$v['pic'].">\")'><i class='fa fa-picture-o'></i></a>]]></cell>";
 		$xml.= "<cell><![CDATA[<a class='btn blue' href='".U('hotspot/index',array('sid'=>$v['scene_id']))."'><i class='fa fa-pencil-square-o'></i>".count($v['hotspot'])."</a>]]></cell>";
+		$xml.= "<cell>".$v['hlookat']."</cell>";
+		$xml.= "<cell>".$v['vlookat']."</cell>";
+		$xml.= "<cell>".$v['fov']."</cell>";
 		$xml.= "<cell>".date('Y-m-d H:i:s',$v['update_time'])."</cell>";
 		$xml.= "</row>";
 	}

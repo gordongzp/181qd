@@ -6,15 +6,18 @@ class HotspotAction extends CommonAction {
 	public function __construct(){
 		parent::__construct();
 		if (I('sid')) {
-			S('sid',I('sid'));
+			session('sid',I('sid'));
 		}
-		$this->sid=S('sid');
+		$this->sid=session('sid');
 		$this->assign('sid',$this->sid);
 	}
 	
 	public function index(){
 		$model = D('Hotspot');
 		$list = $model->where('scene_id='.$this->sid)->order('sort')->select();
+		$scene_data=D('Scene')->relation('tour')->find($this->sid);
+		$this->assign('tour_title',$scene_data['tour']['title']);
+		$this->assign('scene_title',$scene_data['title']);
 		$this->assign('list',$list);
 		$this->set_back();
 		$this->display();
@@ -29,6 +32,7 @@ class HotspotAction extends CommonAction {
 	}
 	
 	public function save_data(){
+		$model = D('Hotspot');
 		if(false === $data = $model->create()){
 			$e = $model->getError();
 			$this->error($e);

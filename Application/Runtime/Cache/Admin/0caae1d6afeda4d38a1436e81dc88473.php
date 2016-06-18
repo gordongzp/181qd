@@ -36,9 +36,9 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 	<div class="page">
 		<div class="fixed-bar">
 			<div class="item-title">
-				<?php echo ($back_htn_html); ?>
+				<a class="back" href="<?php echo U('tour/index');?>" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
 				<div class="subject">
-					<h3>场景管理</h3>
+					<h3>场景管理(<?php echo ($tour_title); ?>)</h3>
 					<h5>场景索引和管理</h5>
 				</div>
 			</div>
@@ -62,11 +62,16 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 			$("#flexigrid").flexigrid({
 				url: '<?php echo U("scene/index");?>',
 				colModel : [
-					{display: '操作', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+					{display: '操作', name : 'operation', width : 200, sortable : false, align: 'center', className: 'handle'},
 					{display: '排序', name : 'sort', width : 60, sortable : true, align: 'center'},
 					{display: '场景标题', name : 'title', width : 300, sortable : false, align: 'left'},
 					{display: '缩略图', name : 'pic', width : 60, sortable : false, align: 'center'},	
-					{display: '热点数', name : 'hotspot', width : 60, sortable : false, align: 'center'},					
+					{display: '热点数', name : 'hotspot', width : 60, sortable : false, align: 'center'},
+
+					{display: 'hlookat', name : 'hlookat', width : 60, sortable : false, align: 'center'},	
+					{display: 'vlookat', name : 'vlookat', width : 60, sortable : false, align: 'center'},
+					{display: 'fov', name : 'fov', width : 60, sortable : false, align: 'center'},
+								
 					{display: '更新时间', name : 'update_time', width : 130, sortable : true, align: 'center', className: 'column-a'},
 					],
 				buttons : [

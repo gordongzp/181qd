@@ -37,9 +37,9 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 	<div class="page">
 		<div class="fixed-bar">
 			<div class="item-title">
-				{$back_htn_html}
+				<a class="back" href="{:U('scene/index')}" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
 				<div class="subject">
-					<h3>热点管理</h3>
+					<h3>热点管理({$tour_title}/{$scene_title})</h3>
 					<h5>场景热点编辑管理</h5>
 				</div>
 			</div>
@@ -83,7 +83,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 						<?php 
 						if ($r['type']==1) {
 							?>
-							<a class="btn green" href="{:U('kp/set_scene',array('id'=>$r['hotspot_id']))}"><i class="fa fa-video-camera"></i>配置场景</a>
+							<a class="btn green" href="{:U('kp/set_goto_scene',array('id'=>$r['hotspot_id']))}"><i class="fa fa-video-camera"></i>配置镜头</a>
 							<?php 
 						}
 						?>

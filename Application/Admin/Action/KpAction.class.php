@@ -39,7 +39,7 @@ class KpAction extends CommonAction {
 			foreach ($tour['scene'] as $k => $v) {
 				$scene_ids[]=$v['scene_id'];
 			}
-			$scenes=D('scene')->relation(true)->where(array('scene_id'=>array('in',$scene_ids)))->select();
+			$scenes=D('scene')->relation(true)->where(array('scene_id'=>array('in',$scene_ids)))->order('sort asc')->select();
 		}
 		//检查是否有工作目录,有则删除,没有则创建
 		if (is_dir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name)){
@@ -270,12 +270,15 @@ str;
 
 	foreach ($scenes as $k => $scene) {
 		$scene_path_name=md10($scene['scene_id']);
+		$hlookat=$scene['hlookat'];
+		$vlookat=$scene['vlookat'];
+		$fov=$scene['fov'];
 
 $str.=<<<str
 
 	<scene name="{$scene_path_name}" title="{$scene_path_name}" onstart="" thumburl="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/thumb.jpg">
 
-		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="95" fovmin="45" fovmax="120" />
+		<view hlookat="{$hlookat}" vlookat="{$vlookat}" fovtype="MFOV" fov="{$fov}" fovmin="45" fovmax="120" />
 
 		<image>
 			<cube url="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/{$KP_MOBILE_NAME}_%s.jpg" />
@@ -287,6 +290,7 @@ $str.=<<<str
 str;
 
 	foreach ($scene['hotspot'] as $key => $hotspot) {
+		$hotspot_id=$hotspot['hotspot_id'];
 		$hotspot_name=$hotspot['hotspot_name'];
 		$type=$hotspot['type'];
 		$ath=$hotspot['ath'];
@@ -297,17 +301,19 @@ str;
 		$goto_scene_fov=$hotspot['goto_scene_fov'];
 		$target=$hotspot['target'];
 
+		$md10_hotspot_id=md10($hotspot_id);
+
 		$where = array('title' => $goto_scene_title, 'tour_id' => $id,);
 		$goto_scene_data=D('Scene')->relation('attachment')->where($where)->find();
 		$goto_scene_id=$goto_scene_data['scene_id'];//goto_scene_id
 		$goto_scene_name=md10($goto_scene_id);
 
-		$des_ath=$ath+3;
-		$des_atv=$atv-3;
+		$des_ath=$ath+C('KP_HOTSPOT_DATH');
+		$des_atv=$atv+C('KP_HOTSPOT_DATV');
 		switch ($type) {
 			case 1:
 $str.=<<<str
-<hotspot name="{$hotspot_name}"  style="arrowspot1" ath="{$ath}" atv="{$atv}" scale="0.45" onclick="transition({$hotspot_name}, {$des_ath}, {$des_atv}, 0, {$goto_scene_name}, {$goto_scene_hlookat}, {$goto_scene_vlookat}, {$goto_scene_fov});" />
+<hotspot name="{$md10_hotspot_id}"  style="arrowspot1" ath="{$ath}" atv="{$atv}" scale="0.45" onclick="transition({$md10_hotspot_id}, {$des_ath}, {$des_atv}, 0, {$goto_scene_name}, {$goto_scene_hlookat}, {$goto_scene_vlookat}, {$goto_scene_fov});" />
 str;
 			break;
 			case 2:
@@ -519,7 +525,7 @@ str;
 
 
 
-	public function set_scene(){
+	public function set_goto_scene(){
 		if (isset($_GET['goto_scene_hlookat'])) {
 			//写入数据库
 			R('Hotspot/save_configs');
@@ -537,7 +543,7 @@ str;
 		$goto_scene_data=D('Scene')->relation('attachment')->where($where)->find();
 		$goto_scene_id=$goto_scene_data['scene_id'];//goto_scene_id
 
-		$get_url='/index.php?m=Admin&amp;c=kp&amp;a=set_scene';
+		$get_url='/index.php?m=Admin&amp;c=kp&amp;a=set_goto_scene';
 		$goto_scene_hlookat=$hotspot_data['goto_scene_hlookat'];
 		$goto_scene_vlookat=$hotspot_data['goto_scene_vlookat'];
 		$goto_scene_fov=$hotspot_data['goto_scene_fov'];
@@ -648,6 +654,167 @@ $str=<<<str
 	<action name="get_url">
 		def(uuu, string, '');
 		txtadd(uuu,'{$get_url}&amp;id={$hotspot_id}','&amp;goto_scene_hlookat=',get(view[0].hlookat),'&amp;goto_scene_vlookat=',get(view[0].vlookat),'&amp;goto_scene_fov=',get(view[0].fov));
+		openurl(get(uuu));
+	</action>
+	
+	<!-- the action for dragging the hotspot - call it once in the ondown event -->
+
+	<action name="print_view_sets"><![CDATA[
+		copy(print_hlookat, view[0].hlookat);
+		copy(print_vlookat, view[0].vlookat);
+		copy(print_fov, view[0].fov);
+		roundval(print_hlookat, 3);
+		roundval(print_vlookat, 3);
+		roundval(print_fov, 3);
+		calc(plugin[hotspot_pos_info].html, '&lt;view name=镜头[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hlookat="' + print_hlookat + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlookat="' + print_vlookat + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fov="' + print_fov + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&gt;');
+	]]></action>
+
+		<image>
+			<cube url="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/{$KP_MOBILE_NAME}_%s.jpg" />
+		</image>
+
+		<events onviewchange="print_view_sets()"/>
+
+		<hotspot name="确定" 
+			 url="skin/kuchlerhaus-logo.png"
+			 ath="0"
+	         atv="90"
+	         distorted="true"
+	         scale="1.0"
+	         rotate="0.0"
+	         onclick="get_url();"
+	    />
+</krpano>
+
+str;
+		file_put_contents('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/tour.xml',$str);
+		echo '<script>window.location.href=\'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/index.html\';</script>';
+	}
+
+
+	public function set_scene(){
+
+		if (isset($_GET['hlookat'])) {
+			//写入数据库
+			R('Scene/save_configs');
+			die;
+		}
+
+		$scene_id=I('id');//scene_id
+		$scene_data=D('Scene')->relation('attachment')->find($scene_id);
+		$tour_id=$scene_data['tour_id'];//tour_id
+
+		$get_url='/index.php?m=Admin&amp;c=kp&amp;a=set_scene';
+		$hlookat=$scene_data['hlookat'];
+		$vlookat=$scene_data['vlookat'];
+		$fov=$scene_data['fov'];
+
+		$KP_PANOS_PATH_NAME=C('KP_PANOS_PATH_NAME');
+		$KP_MOBILE_NAME=C('KP_MOBILE_NAME');
+		$tour_work_path_name=md10($tour_id).'temp';
+
+		//检查是否有工作目录,有则删除,没有则创建
+		if (is_dir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name)){
+			delDirAndFile('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
+		}
+		recurse_copy('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.C('KP_TEMPLATE_NAME'),'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
+			//修改index入口文件
+		$str=<<<str
+<!DOCTYPE html>
+<html>
+<head>
+<!-- redirect to the root krpano.html to avoid local browser restrictions -->
+<meta http-equiv="refresh" content="0; url=../../krpano.html?xml=examples/{$tour_work_path_name}/tour.xml" />
+<style>body{background-color:#000000;}</style>
+</head>
+</html>
+str;
+		file_put_contents('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/index.html',$str);
+
+			//场景文件组织
+			$scene_path_name=md10($scene_id);
+			//创建场景目录
+			mkdir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name);
+			//构建场景thumb
+			copy($scene['pic'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/thumb.jpg');
+			//复制空的index.html
+			copy('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.C('KP_TEMPLATE_NAME').'/index_empty.html','./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/index.html');
+			//构建场景cube
+			foreach ($scene_data['attachment'] as $key => $attachment) {
+				switch ($key) {
+					case 0:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_r.jpg');
+					break;
+					case 1:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_l.jpg');
+					break;
+					case 2:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_b.jpg');
+					break;
+					case 3:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_f.jpg');
+					break;
+					case 4:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_d.jpg');
+					break;
+					case 5:
+					copy($attachment['path'],'./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'/'.C('KP_PANOS_PATH_NAME').'/'.$scene_path_name.'/'.C('KP_MOBILE_NAME').'_u.jpg');
+					break;
+					default:
+					break;
+				}	
+			}
+
+
+$str=<<<str
+<!--
+	krpano Virtual Tour Demo - Kuchlerhaus
+		http://krpano.com/tours/kuchlerhaus/
+
+	The tour images were build fully automatic with the MAKE VTOUR Droplet,
+	but the skin itself and the hotspots are fully custom xml code.
+
+	Note - this is an reduced example (smaller images, stronger compression, fewer panos) to keep the download package small!
+-->
+<krpano>
+
+	<include url="contextmenu.xml" />
+
+	<view hlookat="{$hlookat}" vlookat="{$vlookat}" fovtype="MFOV" fov="{$fov}" fovmin="60" fovmax="150" />
+
+	<!-- hotspot styles -->
+	<style name="arrowspot1" url="skin/pfeil1.png" distorted="true" />
+	<style name="arrowspot2" url="skin/pfeil2.png" distorted="true" />
+	<style name="arrowspot3" url="skin/pfeil3.png" distorted="true" />
+	<style name="arrowspot4" url="skin/pfeil4.png" distorted="true" />
+	<style name="arrowspot5" url="skin/pfeil5.png" distorted="true" />
+	<style name="zoomspot"   url="skin/zoomicon.png" distorted="true" />
+
+	<!-- textfield with information about the currently dragged hotspot -->
+	<plugin name="hotspot_pos_info"
+	        url="%SWFPATH%/plugins/textfield.swf"
+	        html="drag the hotspots..."
+	        css="font-family:Courier;color:white;background:black;"
+	        padding="0"
+	        align="lefttop" x="10" y="10"
+	        width="200"
+	        enabled="false"
+	        />
+
+	<!-- logo -->
+	<plugin name="logo"
+	        url="skin/kuchlerhaus-logo.png"
+	        keep="true"
+	        enabled="false"
+	        align="rightbottom"
+	        x="10" y="5"
+	        scale.mobile="0.5"
+	        />
+
+	<!-- 跳转 -->
+	<action name="get_url">
+		def(uuu, string, '');
+		txtadd(uuu,'{$get_url}&amp;id={$scene_id}','&amp;hlookat=',get(view[0].hlookat),'&amp;vlookat=',get(view[0].vlookat),'&amp;fov=',get(view[0].fov));
 		openurl(get(uuu));
 	</action>
 	

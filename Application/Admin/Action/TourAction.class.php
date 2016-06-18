@@ -56,6 +56,10 @@ class TourAction extends CommonAction {
 			if (is_dir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name)){
 				delDirAndFile('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name);
 			}
+			//临时目录
+			if (is_dir('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'temp')){
+				delDirAndFile('./Public/'.C('KP_VIEWER_PATH_NAME').'/examples/'.$tour_work_path_name.'temp');
+			}
 		}
 		$result2 = D('Tour')->where(array('tour_id'=>array('in',$del_ids)))->delete();
 		if($result2 === false){
