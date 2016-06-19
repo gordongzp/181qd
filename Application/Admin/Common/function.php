@@ -229,7 +229,9 @@ function scene_xml_encode($data, $root='rows', $item='item', $attr='', $id='id',
 	$xml   .= "<total>".$data['total']."</total>";
 	foreach($data['data'] as $v){
 		$xml.= "<row id='".$v['scene_id']."'>"; 
-		$xml.= "<cell><![CDATA[<a class='btn blue' href='".U('scene/edit',array('id'=>$v['scene_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn green' href='".U('kp/set_scene',array('id'=>$v['scene_id']))."'><i class='fa fa-video-camera'></i>镜头配置</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['scene_id'].");'><i class='fa fa-trash-o'></i>删除</a>]]></cell>";
+		$xml.= "<cell>";
+		$xml.="<![CDATA[<a class='btn green' href='".U('kp/set_scene',array('id'=>$v['scene_id']))."'><i class='fa fa-video-camera'></i>镜头配置</a>]]>";
+		$xml.= "<![CDATA[<a class='btn blue' href='".U('scene/edit',array('id'=>$v['scene_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['scene_id'].");'><i class='fa fa-trash-o'></i>删除</a>]]></cell>";
 		$xml.= "<cell>".$v['sort']."</cell>";
 		$xml.= "<cell>".$v['title']."</cell>";
 		$xml.= "<cell><![CDATA[<a href='javascript:void(0);' class='pic-thumb-tip' onMouseOut='toolTip()' onMouseOver='toolTip(\"<img src=".$v['pic'].">\")'><i class='fa fa-picture-o'></i></a>]]></cell>";
@@ -243,6 +245,54 @@ function scene_xml_encode($data, $root='rows', $item='item', $attr='', $id='id',
 	$xml   .= "</{$root}>";
 	return $xml;
 }
+
+
+//文章列表xml
+function hotspot_xml_encode($data, $root='rows', $item='item', $attr='', $id='id', $encoding='utf-8'){
+	if(is_array($attr)){
+		$_attr = array();
+		foreach ($attr as $key => $value) {
+			$_attr[] = "{$key}=\"{$value}\"";
+		}
+		$attr = implode(' ', $_attr);
+	}
+	$attr   = trim($attr);
+	$attr   = empty($attr) ? '' : " {$attr}";
+	$xml    = "<?xml version=\"1.0\" encoding=\"{$encoding}\"?>";
+	$xml   .= "<{$root}{$attr}>";
+	$xml   .= "<page>".$data['page']."</page>";
+	$xml   .= "<total>".$data['total']."</total>";
+	foreach($data['data'] as $v){
+		$cat_id=$v['cat_id'];
+		$cat_data=D('HotspotCategory')->find($cat_id);
+		$cat_name=$cat_data['cat_name'];
+
+		$xml.= "<row id='".$v['hotspot_id']."'>"; 
+		$xml.= "<cell>";
+		if('导航'==$cat_name) {
+			$xml.= "<![CDATA[<a class='btn green' href='".U('kp/set_goto_array',array('id'=>$v['hotspot_id']))."'><i class='fa fa-gear'></i>配置热点</a>]]>";
+			$xml.="<![CDATA[<a class='btn green' href='".U('kp/set_goto_scene',array('id'=>$v['hotspot_id']))."'><i class='fa fa-video-camera'></i>配置镜头</a>]]>";
+		}
+		$xml.="<![CDATA[<a class='btn blue' href='".U('hotspot/edit',array('id'=>$v['hotspot_id']))."'><i class='fa fa-pencil-square-o'></i>编辑</a><a class='btn red' href='javascript:void(0);' onclick='fg_del(".$v['hotspot_id'].");'><i class='fa fa-trash-o'></i>删除</a>]]></cell>";
+		$xml.= "<cell>".$v['sort']."</cell>";
+
+		$xml.= "<cell>".$v['title']."</cell>";
+
+		$xml.= "<cell>".$v['category']['cat_name']."</cell>";
+
+		if($v['status']){
+			$xml.= "<cell><![CDATA[<span class='yes'><i class='fa fa-check-circle'></i>显示</span>]]></cell>";
+		}else{
+			$xml.= "<cell><![CDATA[<span class='no'><i class='fa fa-ban'></i>隐藏</span>]]></cell>";
+		}
+		$xml.= "<cell>".date('Y-m-d H:i:s',$v['update_time'])."</cell>";
+		$xml.= "</row>";
+	}
+	$xml   .= "</{$root}>";
+	return $xml;
+}
+
+
 
 //上传文件
 function upload_file($savepath,$field){
@@ -295,5 +345,5 @@ function delDirAndFile( $dirName )
 
 //md10加密
 function md10($str){
-	return md5($str);
+	return 'a'.md5($str);
 }

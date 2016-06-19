@@ -37,8 +37,8 @@
 			<div class="item-title">
 				<?php echo ($back_htn_html); ?>
 				<div class="subject">
-					<h3>场景管理 - 场景文章</h3>
-					<h5>场景索引和管理</h5>
+					<h3>热点管理 - 编辑热点</h3>
+					<h5>热点索引和管理</h5>
 				</div>
 			</div>
 		</div>
@@ -46,22 +46,59 @@
 		
 		<form id="add_form" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="form_submit" value="ok" />
-			<input type="hidden" name="tour_id" value="<?php echo ($tid); ?>" />
-
+			<input type="hidden" name="hotspot_id" value="<?php echo ($hotspot_id); ?>" />
 			<div class="ncap-form-default">
 				<div class="title"><h3>基本信息</h3></div>
 				
+				<dl class="row">
+					<dt class="tit">
+						<label for="cat_id"><em>*</em>热点类别</label>
+					</dt>
+					<dd class="opt">
+						<select name="cat_id" id="cat_id" value="<?php echo ($cat_id); ?>">
+							<option value="">-请选择-</option>
+							<?php if(is_array($nc)): $i = 0; $__LIST__ = $nc;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$r): $mod = ($i % 2 );++$i;?><option value="<?php echo ($r["cat_id"]); ?>"><?php echo ($r["cat_name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+						</select>
+						<span class="err"></span>
+						<p class="notic">请选择一个热点类型。</p>
+					</dd>
+				</dl>
 				
 				<dl class="row">
 					<dt class="tit">
-						<label for="title"><em>*</em>场景标题</label>
+						<label for="title"><em>*</em>热点标题</label>
 					</dt>
 					<dd class="opt">
 						<input type="text" id="title" name="title" value="<?php echo ($title); ?>" class="input-txt">
 						<span class="err"></span>
 						<p class="notic">单页标题不能超过200个任意字符。</p>
 					</dd>
+					<dt class="tit">
+						<label for="scale">热点大小</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="scale" name="scale" value="<?php echo ($scale); ?>" class="w60">
+						<span class="err"></span>
+						<p class="notic">不能小于零</p>
+					</dd>
 				</dl>
+
+
+				<dl class="row">
+					<dt class="tit">
+						<label for="goto_scene_id">去往场景</label>
+					</dt>
+					<dd class="opt">
+						<select name="goto_scene_id" id="goto_scene_id" value="<?php echo ($goto_scene_id); ?>">
+							<option value="">-请选择-</option>
+							<?php if(is_array($scenes)): $i = 0; $__LIST__ = $scenes;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$r): $mod = ($i % 2 );++$i;?><option value="<?php echo ($r["scene_id"]); ?>"><?php echo ($r["title"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+						</select>
+						<span class="err"></span>
+						<p class="notic">当类型为导航时有效</p>
+					</dd>
+				</dl>
+
+
 				
 				<dl class="row">
 					<dt class="tit">
@@ -76,7 +113,7 @@
 								<input type="file" class="type-file-file" id="file_pic" name="file_pic" size="30" hidefocus="true"  nc_type="upload_file_pic" title="">
 								<input type='text' name='textfield' id='textfield' class='type-file-text' />
 								<input type='button' name='button' id='button1' value='选择上传...' class='type-file-button' />
-								<input type="hidden" name="pic" id="pic" value="" />
+								<input type="hidden" name="pic" id="pic" value="<?php echo ($pic); ?>" />
 							</span>
 						</div>
 						<a onclick="clear_pic()" class="ncap-btn" href="JavaScript:void(0);"><i class="fa fa-trash"></i>删除</a>
@@ -85,35 +122,32 @@
 					</dd>
 				</dl>
 				
+				
 				<dl class="row">
-					<dt class="tit">上传附件</dt>
-					<dd class="opt" id="divComUploadContainer">
-						<div class="input-file-show">
-							<span class="type-file-box">
-								<input class="type-file-file" id="fileupload" name="fileupload" type="file" size="30" multiple hidefocus="true" title="">
-								<input type="text" id="text" class="type-file-text" />
-								<input type="button" name="button" id="button" value="选择上传..." class="type-file-button" />
-							</span>
+					<dt class="tit">
+						<label for="status"><em>*</em>状态</label>
+					</dt>
+					<dd class="opt">
+						<div class="onoff">
+							<label class="cb-enable <?php if(($status) == "1"): ?>selected<?php endif; ?>" for="status1">显示</label>
+							<label class="cb-disable <?php if(($status) == "0"): ?>selected<?php endif; ?>" for="status0">隐藏</label>
+							<input type="radio" value="1" name="status" id="status1">
+							<input type="radio" value="0" name="status" id="status0">
 						</div>
-						<div id="thumbnails" class="ncap-thumb-list">
-							<h5><i class="fa fa-exclamation-circle"></i>上传后的图片可以插入到富文本编辑器中使用，无用附件请手动删除，如不处理系统会始终保存该附件图片。</h5>
-							<ul></ul>
-						</div>
+						<p class="notic"></p>
 					</dd>
 				</dl>
-				
 				
 				<dl class="row">
 					<dt class="tit">
 						<label for="sort">排序</label>
 					</dt>
 					<dd class="opt">
-						<input type="text" id="sort" name="sort" class="w60">
+						<input type="text" id="sort" name="sort" value="<?php echo ($sort); ?>" class="w60">
 						<span class="err"></span>
 						<p class="notic">数字范围为0~255，数字越小越靠前。</p>
 					</dd>
 				</dl>
-				
 				
 				<div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
 			</div>
@@ -150,20 +184,6 @@
 			$("#textfield").val($("#file_pic").val());
 		});
 
-		// 图片上传
-		$('input[name="fileupload"]').each(function(){
-			$(this).fileupload({
-				dataType: 'json',
-				url: '<?php echo U("scene/upload_attachment");?>',
-				done: function (e,json){
-					var data = json.result;
-					if(data.status==1){
-						add_uploadedfile(data.data);
-					}
-				}
-			});
-		});
-
 		//按钮先执行验证再提交表单
 		$("#submitBtn").click(function(){
 			if($("#add_form").valid()){
@@ -172,7 +192,8 @@
 		});
 		
 		$('#cat_id').val('<?php echo ($cat_id); ?>')
-		
+		$('#goto_scene_id').val('<?php echo ($goto_scene_id); ?>')
+
 		$("#add_form").validate({
 			errorPlacement: function(error, element){
 				var error_td = element.parent('dd').children('span.err');
@@ -180,43 +201,37 @@
 			},
 			
 			rules: {
+				cat_id:{required:true},
 				title:{required:true},
+				scale:{min:0.0001},
 			},
 			messages: {
+				cat_id: {
+					required : '<i class="fa fa-exclamation-circle"></i>请选择一个发布栏目。',
+				},
 				title: {
 					required : '<i class="fa fa-exclamation-circle"></i>标题不能为空',
+				},
+				scale: {
+					min : '<i class="fa fa-exclamation-circle"></i>不能小于零',
 				},
 			}
 		});
 	});
+	
 	function clear_pic(){
 		$("#show_pic").remove();
 		$("#textfield").val("");
 		$("#file_pic").val("");
 		$("#pic").val("");
 	}
-	function add_uploadedfile(data){
-		var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment[][path]" value="' + data.file_path  + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path  + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id +',\'' + data.file_path  + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path  + '\');" class="inset"><i class="fa fa-cogs"></i></a></li>';
-		$('#thumbnails > ul').prepend(newImg);
-	}
+	
+
 	
 	function insert_editor(file_name){
 		KE.appendHtml('content', '<img src="'+ file_name + '">');
 	}
-	
-	function del_file_upload(aid,file_id,file_path){
-		if(!window.confirm('您确定要删除吗?')){
-			return;
-		}
-		var nid = '<?php echo ($scene_id); ?>';
-		$.getJSON('<?php echo U("scene/remove_attachment");?>', {'aid':aid,'nid':nid,'file_path':file_path},function(json){
-			if(json.status==1){
-				$('#' + file_id).remove();
-			}else{
-				alert('删除失败');
-			}
-		});
-	}
+
 </script> 
 <div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
 </body>

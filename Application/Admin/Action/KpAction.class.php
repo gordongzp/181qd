@@ -288,30 +288,33 @@ $str.=<<<str
 str;
 
 	foreach ($scene['hotspot'] as $key => $hotspot) {
+		if (!$hotspot['status']) {
+			continue;
+		}
 		$hotspot_id=$hotspot['hotspot_id'];
-		$hotspot_name=$hotspot['hotspot_name'];
-		$type=$hotspot['type'];
+		$title=$hotspot['title'];
+		$cat_id=$hotspot['cat_id'];
+		$cat_data=D('HotspotCategory')->find($cat_id);
+		$cat_name=$cat_data['cat_name'];
 		$ath=$hotspot['ath'];
 		$atv=$hotspot['atv'];
-		$goto_scene_title=$hotspot['goto_scene_title'];
+		$scale=$hotspot['scale'];
+		$goto_scene_id=$hotspot['goto_scene_id'];
 		$goto_scene_hlookat=$hotspot['goto_scene_hlookat'];
 		$goto_scene_vlookat=$hotspot['goto_scene_vlookat'];
 		$goto_scene_fov=$hotspot['goto_scene_fov'];
 		$target=$hotspot['target'];
 
-		$md10_hotspot_id=md10($hotspot_id);
 
-		$where = array('title' => $goto_scene_title, 'tour_id' => $id,);
-		$goto_scene_data=D('Scene')->relation('attachment')->where($where)->find();
-		$goto_scene_id=$goto_scene_data['scene_id'];//goto_scene_id
+		$md10_hotspot_id=md10($hotspot_id);
 		$goto_scene_name=md10($goto_scene_id);
 
 		$des_ath=$ath+C('KP_HOTSPOT_DATH');
 		$des_atv=$atv+C('KP_HOTSPOT_DATV');
-		switch ($type) {
-			case 1:
+		switch ($cat_name) {
+			case '导航':
 $str.=<<<str
-<hotspot name="{$md10_hotspot_id}" tooltip="{$hotspot_name}" style="arrowspot1|tooltip" ath="{$ath}" atv="{$atv}" scale="0.45" onclick="transition({$md10_hotspot_id}, {$des_ath}, {$des_atv}, 0, {$goto_scene_name}, {$goto_scene_hlookat}, {$goto_scene_vlookat}, {$goto_scene_fov});" />
+<hotspot name="{$md10_hotspot_id}" tooltip="{$title}" style="arrowspot1|tooltip" ath="{$ath}" atv="{$atv}" scale="{$scale}" onclick="transition({$md10_hotspot_id}, {$des_ath}, {$des_atv}, 0, {$goto_scene_name}, {$goto_scene_hlookat}, {$goto_scene_vlookat}, {$goto_scene_fov});" />
 str;
 			break;
 			case 2:
@@ -350,7 +353,7 @@ str;
 
 
 
-	public function set_ath_and_atv(){
+	public function set_goto_array(){
 		if (isset($_GET['atv'])) {
 			$hotspot_id=I('id');
 			$atv=I('atv');
@@ -364,7 +367,7 @@ str;
 		$scene_id=$hotspot_data['scene_id'];//scene_id
 		$scene_data=D('Scene')->relation('attachment')->find($scene_id);
 		$tour_id=$scene_data['tour_id'];//tour_id
-		$get_url='/index.php?m=Admin&amp;c=kp&amp;a=set_ath_and_atv';
+		$get_url='/index.php?m=Admin&amp;c=kp&amp;a=set_goto_array';
 		$ath=$hotspot_data['ath'];
 		$atv=$hotspot_data['atv'];
 
@@ -523,14 +526,11 @@ str;
 
 		$hotspot_id=I('id');//hotspot_id
 		$hotspot_data=D('Hotspot')->find($hotspot_id);
-		$scene_id=$hotspot_data['scene_id'];//scene_id
-		$scene_data=D('Scene')->relation('attachment')->find($scene_id);
-		$tour_id=$scene_data['tour_id'];//tour_id
+		$goto_scene_id=$hotspot_data['goto_scene_id'];
 
-		$goto_scene_title=$hotspot_data['goto_scene_title'];//goto_scene_title
-		$where = array('title' => $goto_scene_title, 'tour_id' => $tour_id,);
-		$goto_scene_data=D('Scene')->relation('attachment')->where($where)->find();
-		$goto_scene_id=$goto_scene_data['scene_id'];//goto_scene_id
+		$goto_scene_data=D('Scene')->relation('attachment')->find($goto_scene_id);
+		$tour_id=$goto_scene_data['tour_id'];
+
 
 		$get_url='/index.php?m=Admin&amp;c=kp&amp;a=set_goto_scene';
 		$goto_scene_hlookat=$hotspot_data['goto_scene_hlookat'];

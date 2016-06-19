@@ -78,6 +78,7 @@ class InstalAction extends Action {
 		$dataList[] = array('menu_id'=>47,'menu_name'=>'全景','pid'=>43,'type'=>1,'module_name'=>'News','action_name'=>'index','class_name'=>'ico-shop-1','sort'=>255,'status'=>1);
 		$dataList[] = array('menu_id'=>48,'menu_name'=>'全景分类','pid'=>47,'type'=>1,'module_name'=>'TourCategory','action_name'=>'index','class_name'=>'','sort'=>222,'status'=>1);
 		$dataList[] = array('menu_id'=>49,'menu_name'=>'全景列表','pid'=>47,'type'=>1,'module_name'=>'Tour','action_name'=>'index','class_name'=>'','sort'=>255,'status'=>1);
+		$dataList[] = array('menu_id'=>50,'menu_name'=>'热点分类','pid'=>47,'type'=>1,'module_name'=>'HotspotCategory','action_name'=>'index','class_name'=>'','sort'=>255,'status'=>1);
 
 		if (M('menu')->addAll($dataList)) {
 			echo "createMenu suc";
