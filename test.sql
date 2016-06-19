@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/6/18 23:14:01                           */
+/* Created on:     2016/6/19 21:06:45                           */
 /*==============================================================*/
 
 
@@ -11,6 +11,8 @@ drop table if exists cms_admin_role;
 drop table if exists cms_auth;
 
 drop table if exists cms_hotspot;
+
+drop table if exists cms_hotspot_category;
 
 drop table if exists cms_menu;
 
@@ -72,19 +74,34 @@ create table cms_auth
 /*==============================================================*/
 create table cms_hotspot
 (
-   hotspot_id           int(11) not null auto_increment,
+   hotspot_id           int(10) not null auto_increment,
+   cat_id               int(10),
    scene_id             int(10),
-   hotspot_name         varchar(200) not null,
-   sort                 tinyint(6) unsigned not null,
-   type                 tinyint(1) unsigned not null default 1,
+   title                varchar(200) not null,
+   sort                 tinyint(6) not null default 0,
+   status               tinyint(1) unsigned default 1,
+   update_time          varchar(13),
+   pic                  text,
    ath                  float(11) not null default 0,
    atv                  float(11) not null default 0,
-   goto_scene_title     varchar(200),
+   scale                float(11) not null default 1,
+   goto_scene_id        int(10),
    goto_scene_hlookat   float(11) not null default 0,
    goto_scene_vlookat   float(11) not null default 0,
    goto_scene_fov       float(11) not null default 100,
    target               text,
    primary key (hotspot_id)
+);
+
+/*==============================================================*/
+/* Table: cms_hotspot_category                                  */
+/*==============================================================*/
+create table cms_hotspot_category
+(
+   cat_id               int(10) not null auto_increment,
+   cat_name             varchar(50) not null,
+   sort                 tinyint(6) unsigned not null default 0,
+   primary key (cat_id)
 );
 
 /*==============================================================*/
@@ -214,7 +231,10 @@ alter table cms_auth add constraint FK_Reference_2 foreign key (role_id)
 alter table cms_auth add constraint FK_Reference_4 foreign key (menu_id)
       references cms_menu (menu_id) on delete restrict on update restrict;
 
-alter table cms_hotspot add constraint FK_Reference_9 foreign key (scene_id)
+alter table cms_hotspot add constraint FK_Reference_15 foreign key (cat_id)
+      references cms_hotspot_category (cat_id) on delete restrict on update restrict;
+
+alter table cms_hotspot add constraint FK_Reference_17 foreign key (scene_id)
       references cms_scene (scene_id) on delete restrict on update restrict;
 
 alter table cms_news add constraint FK_Reference_13 foreign key (cat_id)

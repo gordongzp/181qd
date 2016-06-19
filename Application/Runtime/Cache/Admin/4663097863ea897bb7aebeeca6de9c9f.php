@@ -37,7 +37,7 @@
 			<div class="item-title">
 				<?php echo ($back_htn_html); ?>
 				<div class="subject">
-					<h3>场景管理 - 场景文章</h3>
+					<h3>场景管理(<?php echo ($tour_title); ?>) - 添加场景</h3>
 					<h5>场景索引和管理</h5>
 				</div>
 			</div>

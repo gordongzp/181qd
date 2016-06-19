@@ -98,9 +98,58 @@ str;
 
 $str=<<<str
 <krpano>
-	<include url="navbar/navbar.xml" />
-	<include url="contextmenu.xml" />
+	<include url="skin/vtourskin.xml"/>
 
+	<skin_settings maps="false" 
+				   maps_type="google" 
+		           maps_bing_api_key="" 
+		           maps_zoombuttons="false" 
+		           gyro="true" 
+		           webvr="true" 
+		           littleplanetintro="false" 
+		           title="true" thumbs="true" 
+		           thumbs_width="120" 
+		           thumbs_height="80" 
+		           thumbs_padding="10" 
+		           thumbs_crop="" 
+		           thumbs_opened="false" 
+		           thumbs_text="false" 
+		           thumbs_dragging="true" 
+		           thumbs_onhoverscrolling="false" 
+		           thumbs_scrollbuttons="false" 
+		           thumbs_scrollindicator="false" 
+		           thumbs_loop="false" 
+		           tooltips_buttons="false" 
+		           tooltips_thumbs="false" 
+		           tooltips_hotspots="false" 
+		           tooltips_mapspots="false" 
+		           deeplinking="false" 
+		           loadscene_flags="MERGE" 
+		           loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)" 
+		           loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)" 
+		           loadscene_blend_next="SLIDEBLEND(0.5, 0, 0.75, linear)" 
+		           loadingtext="loading..." 
+		           layout_width="100%" 
+		           layout_maxwidth="814" 
+		           controlbar_width="-24" 
+		           controlbar_height="40" 
+		           controlbar_offset="20" 
+		           controlbar_offset_closed="-40" controlbar_overlap.no-fractionalscaling="10" controlbar_overlap.fractionalscaling="0" 
+		           design_skin_images="vtourskin.png" 
+		           design_bgcolor="0x2D3E50" 
+		           design_bgalpha="0.8" 
+		           design_bgborder="0" 
+		           design_bgroundedge="1" 
+		           design_bgshadow="0 4 10 0x000000 0.3" 
+		           design_thumbborder_bgborder="3 0xFFFFFF 1.0" 
+		           design_thumbborder_padding="2" 
+		           design_thumbborder_bgroundedge="0" 
+		           design_text_css="color:#FFFFFF; font-family:Arial;" 
+		           design_text_shadow="1"/>
+
+	 <include url="skin/vtourskin_design_ultra_light.xml" /> 
+
+	<include url="contextmenu.xml" />
 
 	<action name="startup" autorun="onstart">
 		if(startscene === null, set(startscene,get(scene[0].name)) );
@@ -115,32 +164,6 @@ $str=<<<str
 	<style name="arrowspot4" url="skin/pfeil4.png" distorted="true" />
 	<style name="arrowspot5" url="skin/pfeil5.png" distorted="true" />
 	<style name="zoomspot"   url="skin/zoomicon.png" distorted="true" />
-
-
-
-	<!-- thumbs -->
-	<layer name="thumbs" keep="true" type="container" align="leftbottom" width="100" height="100%" x="-102" y="0" state="closed">
-		<layer name="thumbsicon" url="skin/thumbs.png" align="rightbottom" x="-10" y="5" edge="leftbottom" scale.mobile="0.75" onclick="if(layer[thumbs].state == 'closed', tween(layer[thumbs].x,0,0.5,easeOutQuint), tween(layer[thumbs].x,-102,0.5,easeOutQuint)); switch(layer[thumbs].state,'closed','opened');" />
-		<layer name="thumbbar" keep="true" type="container" align="leftbottom" width="100" height="100%" x="0" y="0" bgcolor="0xFFFFFF" bgalpha="0.7">
-			<layer name="scrollarea" url.flash="%SWFPATH%/plugins/scrollarea.swf" url.html5="%SWFPATH%/plugins/scrollarea.js" align="center" width="100" height="100%" direction="v" onloaded="setcenter(0,0);" />
-		</layer>
-	</layer>
-
-	<action name="addthumbs">
-		calc(layer[scrollarea].height, scene.count*90 + 10);
-		for(set(i,0), i LT scene.count, inc(i),
-			calc(thumbname,'thumb_' + i);
-			addlayer(get(thumbname));
-			copy(layer[get(thumbname)].url, scene[get(i)].thumburl);
-			set(layer[get(thumbname)].keep, true);
-			set(layer[get(thumbname)].parent, 'scrollarea');
-			set(layer[get(thumbname)].align, lefttop);
-			set(layer[get(thumbname)].x, 10);
-			calc(layer[get(thumbname)].y, i*90 + 10);
-			set(layer[get(thumbname)].linkedscene, get(scene[get(i)].name) );
-			set(layer[get(thumbname)].onclick, tween(layer[thumbs].x,-102,0.2,easeOutQuint,wait); set(layer[thumbs].state,'closed');  loadscene(get(linkedscene), null, MERGE, BLEND(0.5)); );
-		  );
-	</action>
 
 	<!-- logo -->
 	<plugin name="logo"
@@ -161,11 +184,10 @@ $str=<<<str
 	        enabled="false"
 	        visible="false"
 	        />
-
+	
 	<events onxmlcomplete="set(plugin[loading].visible,true);"
 	        onloadcomplete="set(plugin[loading].visible,false);;"
 	        />
-
 
 	<!-- transition action
 		%1 = name of the hotspot to move
@@ -185,12 +207,12 @@ $str=<<<str
 		tween(hotspot[%1].atv,    %3, 0.25, default, WAIT);
 
 		<!-- look at the hotspot position -->
-		looktohotspot(%1);
+		looktohotspot(%1,null,smooth(300,50,20));
 
 		set(plugin[loading].visible,true);
 
 		<!-- load and blend to the new scene -->
-		loadscene(%5, null, MERGE, BLEND(2));
+		loadscene(%5, null, MERGE, BLEND(1));
 
 		<!-- save the startup view position of the scene-->
 		copy(startview_hlookat, view.hlookat);
@@ -256,6 +278,11 @@ $str=<<<str
 		tween(hotspot[%1].rz,  get(hotspot[%1].oldrz));
 	</action>
 
+	<autorotate enabled="true"
+	            waittime="1.0" 
+	            speed="3.0" 
+	            horizon="0.0" 
+	            />
 
 
 	<!-- scenes -->
@@ -278,12 +305,7 @@ $str.=<<<str
 			<cube url="{$KP_PANOS_PATH_NAME}/{$scene_path_name}/{$KP_MOBILE_NAME}_%s.jpg" />
 		</image>
 
-		<!--
-		 the 'tooltip' style - show the tooltip textfield and update its position as long as hovering 
-		-->
-		<style name="tooltip" onover="copy(layer[tooltip].html, tooltip); set(layer[tooltip].visible, true); tween(layer[tooltip].alpha, 1.0, 0.5); asyncloop(hovering, copy(layer[tooltip].x,mouse.stagex); copy(layer[tooltip].y,mouse.stagey); );" onout="tween(layer[tooltip].alpha, 0.0, 0.25, default, set(layer[tooltip].visible,false), copy(layer[tooltip].x,mouse.stagex); copy(layer[tooltip].y,mouse.stagey); );"/>
-		<!--  the 'tooltip' textfield  -->
-		<layer name="tooltip" keep="true" url="%SWFPATH%/plugins/textfield.swf" parent="STAGE" visible="false" alpha="0" enabled="false" align="lefttop" edge="bottom" oy="-2" background="false" backgroundcolor="0xFFFFFF" backgroundalpha="1.0" border="false" bordercolor="0x000000" borderalpha="1.0" borderwidth="1.0" roundedge="0" shadow="0.0" shadowrange="4.0" shadowangle="45" shadowcolor="0x000000" shadowalpha="1.0" textshadow="1" textshadowrange="6.0" textshadowangle="90" textshadowcolor="0x000000" textshadowalpha="1.0" css="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:14px;" html=""/>		
+			
 
 str;
 

@@ -10,6 +10,8 @@ class SceneAction extends CommonAction {
 		}
 		$this->tid=session('tid');
 		$this->assign('tid',$this->tid);
+		$tour_data=D('Tour')->find($this->tid);
+		$this->assign('tour_title',$tour_data['title']);
 	}
 	public function index(){
 		$model = D('Scene');
@@ -29,8 +31,6 @@ class SceneAction extends CommonAction {
 			header('Content-Type:text/xml; charset=utf-8');
 			exit(scene_xml_encode(array('page'=>$page,'total'=>$total,'data'=>$data)));
 		}else{
-			$tour_data=D('Tour')->find($this->tid);
-			$this->assign('tour_title',$tour_data['title']);
 			$this->set_back();
 			$this->display();
 		}

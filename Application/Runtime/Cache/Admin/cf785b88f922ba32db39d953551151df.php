@@ -37,7 +37,7 @@
 			<div class="item-title">
 				<?php echo ($back_htn_html); ?>
 				<div class="subject">
-					<h3>场景管理 - 新增场景</h3>
+					<h3>场景管理(<?php echo ($tour_title); ?>) - 编辑场景</h3>
 					<h5>场景索引和管理</h5>
 				</div>
 			</div>
@@ -122,35 +122,6 @@
 						<input type="text" id="sort" name="sort" value="<?php echo ($sort); ?>" class="w60">
 						<span class="err"></span>
 						<p class="notic">数字范围为0~255，数字越小越靠前。</p>
-					</dd>
-				</dl>
-				
-				<div class="title"><h3>SEO设置</h3></div>
-
-				<dl class="row">
-					<dt class="tit">
-						<label for="seo_title">SEO标题</label>
-					</dt>
-					<dd class="opt">
-						<input id="seo_title" name="seo_title" value="<?php echo ($seo_title); ?>"  class="input-txt" type="text" />
-					</dd>
-				</dl>
-				
-				<dl class="row">
-					<dt class="tit">
-						<label for="seo_keywords">SEO关键字</label>
-					</dt>
-					<dd class="opt">
-						<input id="seo_keywords" name="seo_keywords" value="<?php echo ($seo_keywords); ?>" class="input-txt" type="text" />
-					</dd>
-				</dl>
-				
-				<dl class="row">
-					<dt class="tit">
-						<label for="seo_description">SEO描述</label>
-					</dt>
-					<dd class="opt">
-						<textarea name="seo_description" rows="6" class="tarea" id="seo_description"><?php echo ($seo_description); ?></textarea>
 					</dd>
 				</dl>
 				

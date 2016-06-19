@@ -37,7 +37,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 			<div class="item-title">
 				{$back_htn_html}
 				<div class="subject">
-					<h3>热点管理 - 新增热点</h3>
+					<h3>热点管理({$scene_data['tour']['title']}/{$scene_data['title']}) - 新增热点</h3>
 					<h5>热点索引和管理</h5>
 				</div>
 			</div>
@@ -79,7 +79,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 						<label for="scale">热点大小</label>
 					</dt>
 					<dd class="opt">
-						<input type="text" id="scale" name="scale" value="{$scale}" class="w60">
+						<input type="text" id="scale" name="scale" value="1" class="w60">
 						<span class="err"></span>
 						<p class="notic">不能小于零</p>
 					</dd>
@@ -205,7 +205,7 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 			rules: {
 				cat_id:{required:true},
 				title:{required:true},
-				scale:{min:0.0001},
+				scale:{min:0.001},
 				              
 			},
 			messages: {

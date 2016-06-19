@@ -37,7 +37,7 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 			<div class="item-title">
 				<?php echo ($back_htn_html); ?>
 				<div class="subject">
-					<h3>热点管理 - 新增热点</h3>
+					<h3>热点管理(<?php echo ($scene_data['tour']['title']); ?>/<?php echo ($scene_data['title']); ?>) - 新增热点</h3>
 					<h5>热点索引和管理</h5>
 				</div>
 			</div>
@@ -60,7 +60,7 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 							<?php if(is_array($nc)): $i = 0; $__LIST__ = $nc;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$r): $mod = ($i % 2 );++$i;?><option value="<?php echo ($r["cat_id"]); ?>"><?php echo ($r["cat_name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
 						</select>
 						<span class="err"></span>
-						<p class="notic">请选择一个发布栏目。</p>
+						<p class="notic">请选择一个热点类型。</p>
 					</dd>
 				</dl>
 				
@@ -72,6 +72,14 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 						<input type="text" id="title" name="title" value="<?php echo ($title); ?>" class="input-txt">
 						<span class="err"></span>
 						<p class="notic">单页标题不能超过200个任意字符。</p>
+					</dd>
+					<dt class="tit">
+						<label for="scale">热点大小</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="scale" name="scale" value="1" class="w60">
+						<span class="err"></span>
+						<p class="notic">不能小于零</p>
 					</dd>
 				</dl>
 
@@ -191,6 +199,8 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 			rules: {
 				cat_id:{required:true},
 				title:{required:true},
+				scale:{min:0.001},
+				              
 			},
 			messages: {
 				cat_id: {
@@ -198,6 +208,9 @@ var ADMIN_RESOURCE_URL = '/Public/Admin';
 				},
 				title: {
 					required : '<i class="fa fa-exclamation-circle"></i>标题不能为空',
+				},
+				scale: {
+					min : '<i class="fa fa-exclamation-circle"></i>不能小于零',
 				},
 			}
 		});

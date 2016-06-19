@@ -230,8 +230,8 @@
 	       onloaded="if(linkedscene AND skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );"
 	       />
 
-	<!-- skin_tooltip - style for the thumb, hotspot and mapspot tooltips -->
-	<style name="skin_tooltips"
+		<!-- skin_tooltip - style for the thumb, hotspot and mapspot tooltips -->
+		<style name="skin_tooltips"
 	       onover.mouse="copy(layer[skin_tooltip].html, tooltip);
 	                     set(layer[skin_tooltip].visible, true);
 	                     tween(layer[skin_tooltip].alpha, 1.0, 0.1);
@@ -240,8 +240,8 @@
 	       />
 
 
-	<!-- the tooltip textfield -->
-	<layer name="skin_tooltip" keep="true"
+		<!-- the tooltip textfield -->
+		<layer name="skin_tooltip" keep="true"
 	       url="%SWFPATH%/plugins/textfield.swf"
 	       parent="STAGE"
 	       visible="false" alpha="0" enabled="false"
@@ -254,6 +254,13 @@
 	       html=""
 	       />
 
+		<!--
+		 the 'tooltip' style - show the tooltip textfield and update its position as long as hovering 
+		-->
+		<style name="tooltip" onover="copy(layer[tooltip].html, tooltip); set(layer[tooltip].visible, true); tween(layer[tooltip].alpha, 1.0, 0.5); asyncloop(hovering, copy(layer[tooltip].x,mouse.stagex); copy(layer[tooltip].y,mouse.stagey); );" onout="tween(layer[tooltip].alpha, 0.0, 0.25, default, set(layer[tooltip].visible,false), copy(layer[tooltip].x,mouse.stagex); copy(layer[tooltip].y,mouse.stagey); );"/>
+		<!--  the 'tooltip' textfield  -->
+		<layer name="tooltip" keep="true" url="%SWFPATH%/plugins/textfield.swf" parent="STAGE" visible="false" alpha="0" enabled="false" align="lefttop" edge="bottom" oy="-2" background="false" backgroundcolor="0xFFFFFF" backgroundalpha="1.0" border="false" bordercolor="0x000000" borderalpha="1.0" borderwidth="1.0" roundedge="0" shadow="0.0" shadowrange="4.0" shadowangle="45" shadowcolor="0x000000" shadowalpha="1.0" textshadow="1" textshadowrange="6.0" textshadowangle="90" textshadowcolor="0x000000" textshadowalpha="1.0" css="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:14px;" html=""/>
+			
 
 	<!-- skin layout -->
 	<layer name="skin_layer" keep="true" type="container" align="top" width="get:skin_settings.layout_width" maxwidth="get:skin_settings.layout_maxwidth" height="100%" maskchildren="true" visible="false" bgcapture="false" zorder="1">
@@ -294,7 +301,7 @@
 		</layer>
 
 		<layer name="skin_control_bar" type="container" align="bottom" width="get:skin_settings.controlbar_width" height="calc:skin_settings.controlbar_height" x="0" y="get:skin_settings.controlbar_offset" onloaded="skin_calc_opened_closed();" zorder="3">
-			<layer name="skin_control_bar_buttons" type="container" align="leftbottom" width="100%" height="get:skin_settings.controlbar_height">
+				<layer name="skin_control_bar_buttons" type="container" align="leftbottom" width="100%" height="get:skin_settings.controlbar_height">
 				<layer name="skin_btn_prev"      style="skin_base|skin_glow" crop="0|64|64|64"   align="left"        x="5"    y="0"  scale="0.5" alpha="0.5"  onclick="if(skin_settings.thumbs_loop, skin_nextscene_loop(-1), skin_nextscene(-1) );" />
 				<layer name="skin_btn_thumbs"    style="skin_base|skin_glow" crop="0|128|64|64"  align="left"        x="50"   y="0"  scale="0.5" ondown2="skin_showmap(false); skin_showthumbs();" />
 				<layer name="skin_btn_map"       style="skin_base|skin_glow" crop="64|128|64|64" align="left"        x="90"   y="0"  scale="0.5" ondown2="skin_showthumbs(false); skin_showmap();" visible="false" />

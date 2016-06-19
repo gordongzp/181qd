@@ -37,7 +37,7 @@
 			<div class="item-title">
 				<?php echo ($back_htn_html); ?>
 				<div class="subject">
-					<h3>热点管理 - 编辑热点</h3>
+					<h3>热点管理(<?php echo ($scene_data['tour']['title']); ?>/<?php echo ($scene_data['title']); ?>) - 编辑热点</h3>
 					<h5>热点索引和管理</h5>
 				</div>
 			</div>
@@ -203,7 +203,7 @@
 			rules: {
 				cat_id:{required:true},
 				title:{required:true},
-				scale:{min:0.0001},
+				scale:{min:0.001},
 			},
 			messages: {
 				cat_id: {
