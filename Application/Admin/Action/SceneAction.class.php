@@ -55,19 +55,96 @@ class SceneAction extends CommonAction {
 			$this->display();
 		}
 	}
-	public function del(){
-		$del_ids = explode(',',I('id'));
+	public function del($ids=''){
+		if ($ids=='') {
+			$del_ids = explode(',',I('id'));
+		}else{
+			$del_ids = explode(',',$ids);
+		}
+
+		$scene_data=D('Scene')->relation('hotspot')->where(array('scene_id'=>array('in',$del_ids)))->select();
 		$attachment = D('SceneAttachment')->field('path')->where(array('scene_id'=>array('in',$del_ids)))->select();
-		$result3=D('Hotspot')->where(array('scene_id'=>array('in',$del_ids)))->delete();
+
+		//删除子hotspot
+		$hotspot_ids='';
+		foreach ($scene_data as $key => $value) {
+			if (isset($value['hotspot'])) {
+				foreach ($value['hotspot'] as $k => $v) {
+					$hotspot_ids.=$v['hotspot_id'];
+					$hotspot_ids.=',';
+				}
+			}	
+		}
+		if (count(explode(',',$hotspot_ids))>1) {
+			$Scene=A('Hotspot');
+			$Scene->del($hotspot_ids);
+		}
+	
 		$result1 = D('SceneAttachment')->where(array('scene_id'=>array('in',$del_ids)))->delete();
 		$result2 = D('Scene')->relation('attachment')->where(array('scene_id'=>array('in',$del_ids)))->delete();
 		if($result2 === false){
-			$this->error('删除失败');
+			if ($ids=='') {
+				$this->error('删除失败');
+			}else{
+				return false;
+			}
 		}else{
 			foreach($attachment as $f){
 				unlink($f['path']);
 			}
-			$this->success('删除成功',U('scene/index'));
+			foreach ($scene_data as $k => $v) {
+				if ($v['pic']) {
+					unlink($v['pic']);
+				}
+			}
+			if ($ids=='') {
+				$this->success('删除成功',U('hotspot/index'));
+			}else{
+				return true;
+			}
+		}
+	}
+	
+	private function save_news(){
+		$model = D('Scene');
+		$attachment = I('attachment');
+		if(false === $data = $model->create()){
+			$e = $model->getError();
+			$this->error($e);
+		}
+		if($data[$model->getPk()]){
+			$scene_data=$model->find($data[$model->getPk()]);
+			if ($data['pic']='') {
+				unlink($scene_data['pic']);
+			}
+			if($_FILES['file_pic']['size']>0){
+				unlink($scene_data['pic']);
+				$pic_upload_info = upload_file('./attachment/','file_pic');
+				$model->pic = $pic_upload_info['file_path'];
+			}
+
+			if($attachment){
+				$model->attachment = $attachment;
+			}
+			$result = $model->relation('attachment')->save();
+		}else{
+			if($_FILES['file_pic']['size']>0){
+				$pic_upload_info = upload_file('./attachment/','file_pic');
+				$model->pic = $pic_upload_info['file_path'];
+			}
+
+			if($attachment){
+				$model->attachment = $attachment;
+			}
+			$pk = $model->getPk();
+			unset($model->$pk);
+			$result = $model->relation('attachment')->add();
+		}
+		
+		if($result === false){
+			$this->error('保存失败');
+		}else{
+			$this->success('保存成功',U('scene/index'));
 		}
 	}
 
@@ -93,38 +170,6 @@ class SceneAction extends CommonAction {
 			$this->error('保存失败');
 		}else{
 			$this->success('保存成功',U('Kp/file_put_and_show',array('id' =>$tour_id ,)));
-		}
-	}
-
-	private function save_news(){
-		$model = D('Scene');
-		$attachment = I('attachment');
-		if(false === $data = $model->create()){
-			$e = $model->getError();
-			$this->error($e);
-		}
-		
-		if($_FILES['file_pic']['size']>0){
-			$pic_upload_info = upload_file('./attachment/','file_pic');
-			$model->pic = $pic_upload_info['file_path'];
-		}
-		
-		if($attachment){
-			$model->attachment = $attachment;
-		}
-
-		if($data[$model->getPk()]){
-			$result = $model->relation('attachment')->save();
-		}else{
-			$pk = $model->getPk();
-			unset($model->$pk);
-			$result = $model->relation('attachment')->add();
-		}
-		
-		if($result === false){
-			$this->error('保存失败');
-		}else{
-			$this->success('保存成功',U('Scene/index'));
 		}
 	}
 	

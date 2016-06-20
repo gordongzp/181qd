@@ -21,17 +21,19 @@ class SystemAction extends CommonAction {
 	}
 
 	public function clean(){
-		//新闻缩略图缓存
-		$pics=M('news')->field('pic')->select();
 		//新闻attachments缓存
-		$attachments=M('news_attachment')->field('path')->select();
+		$news_atta=D('NewsAttachment')->field('path')->select();
+		//scene_attachments缓存
+		$scene_atta=D('SceneAttachment')->field('path')->select();
 		//缓存拼接
-		foreach ($pics as $k => $v) {
+		foreach ($news_atta as $k => $v) {
 			$paths[]=$v['pic'];
 		}
-		foreach ($attachments as $k => $v) {
+		foreach ($scene_atta as $k => $v) {
 			$paths[]=$v['path'];
 		}
+
+
 		$filesnames = scandir('./Uploads/attachment');
 		foreach ($filesnames as $k => $v) {
 			if ('.'==$v||'..'==$v) {

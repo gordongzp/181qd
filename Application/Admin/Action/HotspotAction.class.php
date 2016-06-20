@@ -66,13 +66,36 @@ class HotspotAction extends CommonAction {
 			$this->display();
 		}
 	}
-	public function del(){
-		$del_ids = explode(',',I('id'));
+
+
+	public function del($ids=''){
+
+		if ($ids=='') {
+			$del_ids = explode(',',I('id'));
+		}else{
+			$del_ids = explode(',',$ids);
+		}
+		
+
+		$hotspot_data=D('Hotspot')->field('pic')->where(array('hotspot_id'=>array('in',$del_ids)))->select();
 		$result2 = D('Hotspot')->where(array('hotspot_id'=>array('in',$del_ids)))->delete();
 		if($result2 === false){
-			$this->error('删除失败');
+			if ($ids=='') {
+				$this->error('删除失败');
+			}else{
+				return false;
+			}
 		}else{
-			$this->success('删除成功',U('hotspot/index'));
+			foreach ($hotspot_data as $k => $v) {
+				if ($v['pic']) {
+					unlink($v['pic']);
+				}
+			}
+			if ($ids=='') {
+				$this->success('删除成功',U('hotspot/index'));
+			}else{
+				return true;
+			}
 		}
 	}
 	
@@ -82,15 +105,22 @@ class HotspotAction extends CommonAction {
 			$e = $model->getError();
 			$this->error($e);
 		}
-		
-		if($_FILES['file_pic']['size']>0){
-			$pic_upload_info = upload_file('./attachment/','file_pic');
-			$model->pic = $pic_upload_info['file_path'];
-		}
-
 		if($data[$model->getPk()]){
+			$hotspot_data=$model->find($data[$model->getPk()]);
+			if ($data['pic']='') {
+				unlink($hotspot_data['pic']);
+			}
+			if($_FILES['file_pic']['size']>0){
+				unlink($hotspot_data['pic']);
+				$pic_upload_info = upload_file('./attachment/','file_pic');
+				$model->pic = $pic_upload_info['file_path'];
+			}
 			$result = $model->save();
 		}else{
+			if($_FILES['file_pic']['size']>0){
+				$pic_upload_info = upload_file('./attachment/','file_pic');
+				$model->pic = $pic_upload_info['file_path'];
+			}
 			$pk = $model->getPk();
 			unset($model->$pk);
 			$result = $model->add();
@@ -107,7 +137,7 @@ class HotspotAction extends CommonAction {
 		$hotspot_id=I('id');//hotspot_id
 		$hotspot_data=D('Hotspot')->find($hotspot_id);
 		$scene_id=$hotspot_data['scene_id'];//scene_id
-		$scene_data=D('Scene')->relation('attachment')->find($scene_id);
+		$scene_data=D('Scene')->find($scene_id);
 		$tour_id=$scene_data['tour_id'];//tour_id
 		$model = D('Hotspot');
 		$data[$model->getPk()] = I('id');

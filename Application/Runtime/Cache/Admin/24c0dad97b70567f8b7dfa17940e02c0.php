@@ -113,25 +113,11 @@
 			};
 			id = ids.join(',');
 			if(confirm('确认这些全景吗？')){
-				$.getJSON('<?php echo U("tour/get_scene");?>', {id:id}, function(data){
-					if (data) {
-						$.getJSON('<?php echo U("scene/del");?>', {id:data.join(',')}, function(data2){
-							$.getJSON('<?php echo U("tour/del");?>', {id:id}, function(data3){
-								if (data3.status) {
-									location.reload();
-								} else {
-									showError(data3.info)
-								}
-							});
-						});
+				$.getJSON('<?php echo U("tour/del");?>', {id:id}, function(data){
+					if (data.status) {
+						location.reload();
 					} else {
-						$.getJSON('<?php echo U("tour/del");?>', {id:id}, function(data3){
-							if (data3.status) {
-								location.reload();
-							} else {
-								showError(data3.info)
-							}
-						});
+						showError(data.info)
 					}
 				});
 			}

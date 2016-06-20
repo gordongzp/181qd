@@ -47,8 +47,11 @@ class NewsAction extends CommonAction {
 			$this->display();
 		}
 	}
+
+
 	public function del(){
 		$del_ids = explode(',',I('id'));
+		$news_data=D('News')->field('pic')->where(array('news_id'=>array('in',$del_ids)))->select();
 		$attachment = D('NewsAttachment')->field('path')->where(array('news_id'=>array('in',$del_ids)))->select();
 		$result1 = D('NewsAttachment')->where(array('news_id'=>array('in',$del_ids)))->delete();
 		$result2 = D('News')->relation('attachment')->where(array('news_id'=>array('in',$del_ids)))->delete();
@@ -57,6 +60,11 @@ class NewsAction extends CommonAction {
 		}else{
 			foreach($attachment as $f){
 				unlink($f['path']);
+			}
+			foreach ($news_data as $k => $v) {
+				if ($v['pic']) {
+					unlink($v['pic']);
+				}
 			}
 			$this->success('删除成功',U('news/index'));
 		}
@@ -69,19 +77,30 @@ class NewsAction extends CommonAction {
 			$e = $model->getError();
 			$this->error($e);
 		}
-		
-		if($_FILES['file_pic']['size']>0){
-			$pic_upload_info = upload_file('./attachment/','file_pic');
-			$model->pic = $pic_upload_info['file_path'];
-		}
-		
-		if($attachment){
-			$model->attachment = $attachment;
-		}
-
 		if($data[$model->getPk()]){
+			$news_data=$model->find($data[$model->getPk()]);
+			if ($data['pic']='') {
+				unlink($news_data['pic']);
+			}
+			if($_FILES['file_pic']['size']>0){
+				unlink($news_data['pic']);
+				$pic_upload_info = upload_file('./attachment/','file_pic');
+				$model->pic = $pic_upload_info['file_path'];
+			}
+
+			if($attachment){
+				$model->attachment = $attachment;
+			}
 			$result = $model->relation('attachment')->save();
 		}else{
+			if($_FILES['file_pic']['size']>0){
+				$pic_upload_info = upload_file('./attachment/','file_pic');
+				$model->pic = $pic_upload_info['file_path'];
+			}
+
+			if($attachment){
+				$model->attachment = $attachment;
+			}
 			$pk = $model->getPk();
 			unset($model->$pk);
 			$result = $model->relation('attachment')->add();
