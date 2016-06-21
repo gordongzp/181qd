@@ -35,6 +35,13 @@ class KpAction extends CommonAction {
 		$KP_MOBILE_NAME=C('KP_MOBILE_NAME');
 		$tour_work_path_name=md10($id);
 		$tour=D('Tour')->relation('scene')->where('tour_id='.$id)->find();
+
+
+		$id_ratate=$tour['id_ratate'];
+		$rotate_speed=$tour['rotate_speed'];
+		$wait_time=$tour['wait_time'];
+
+
 		if ($tour['scene']) {
 			foreach ($tour['scene'] as $k => $v) {
 				$scene_ids[]=$v['scene_id'];
@@ -278,12 +285,11 @@ $str=<<<str
 		tween(hotspot[%1].rz,  get(hotspot[%1].oldrz));
 	</action>
 
-	<autorotate enabled="true"
-	            waittime="1.0" 
-	            speed="3.0" 
+	<autorotate enabled="{$id_ratate}"
+	            waittime="{$wait_time}" 
+	            speed="{$rotate_speed}" 
 	            horizon="0.0" 
 	            />
-
 
 	<!-- scenes -->
 

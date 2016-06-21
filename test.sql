@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/6/19 21:06:45                           */
+/* Created on:     2016/6/21 2:02:27                            */
 /*==============================================================*/
 
 
@@ -208,6 +208,7 @@ create table cms_tour
    update_time          varchar(13),
    view_times           int(11) default 100,
    pic                  text,
+   auto_rotate          float(11) not null default 0,
    primary key (tour_id)
 );
 

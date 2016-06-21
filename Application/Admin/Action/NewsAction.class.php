@@ -72,14 +72,15 @@ class NewsAction extends CommonAction {
 	
 	private function save_news(){
 		$model = D('News');
+		$news_data=$model->find(I($model->getPk()));
 		$attachment = I('attachment');
 		if(false === $data = $model->create()){
 			$e = $model->getError();
 			$this->error($e);
 		}
 		if($data[$model->getPk()]){
-			$news_data=$model->find($data[$model->getPk()]);
-			if ($data['pic']='') {
+			if ($data['pic']=='') {
+				$model->pic='';
 				unlink($news_data['pic']);
 			}
 			if($_FILES['file_pic']['size']>0){

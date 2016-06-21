@@ -109,6 +109,41 @@ var ADMIN_RESOURCE_URL = '__THEME__';
 						<textarea name="summary" rows="6" class="tarea" id="summary">{$summary}</textarea>
 					</dd>
 				</dl>
+
+				<dl class="row">
+
+					<dt class="tit">
+						<label for="is_rotate">自动旋转</label>
+					</dt>
+					<dd class="opt">
+						<div class="onoff">
+							<label class="cb-enable" for="is_rotate1">开</label>
+							<label class="cb-disable selected" for="is_rotate0">关</label>
+							<input type="radio" value="true" name="is_rotate" id="is_rotate1">
+							<input type="radio" value="false" name="is_rotate" id="is_rotate0">
+						</div>
+						<p class="notic"></p>
+					</dd>
+
+					<dt class="tit">
+						<label for="rotate_speed">旋转速度</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="rotate_speed" name="rotate_speed" value="0" class="w60">
+						<span class="err"></span>
+						<p class="notic">正为顺时针，负为逆时针。</p>
+					</dd>
+
+					<dt class="tit">
+						<label for="wait_time">等待时间</label>
+					</dt>
+					<dd class="opt">
+						<input type="text" id="wait_time" name="wait_time" value="5" class="w60">
+						<span class="err"></span>
+						<p class="notic">单位：秒</p>
+					</dd>
+
+				</dl>
 				
 				<dl class="row">
 					<dt class="tit">

@@ -94,13 +94,14 @@ class TourAction extends CommonAction {
 	
 	private function save_news(){
 		$model = D('Tour');
+		$tour_data=$model->find(I($model->getPk()));
 		if(false === $data = $model->create()){
 			$e = $model->getError();
 			$this->error($e);
 		}
 		if($data[$model->getPk()]){
-			$tour_data=$model->find($data[$model->getPk()]);
-			if ($data['pic']='') {
+			if ($data['pic']=='') {
+				$model->pic='';
 				unlink($tour_data['pic']);
 			}
 			if($_FILES['file_pic']['size']>0){
